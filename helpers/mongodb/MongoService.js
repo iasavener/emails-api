@@ -58,7 +58,7 @@ const MongoService = {
       return await Employee.updateOne( {employee_id}, {$set: data});
     },
 
-    saveEmail: async (emailData) => {
+    insertEmail: async (emailData) => {
       
       try {
         const encryptedEmails = emailData.map((email) => encryptFields(email, ['from','subject', 'body']));

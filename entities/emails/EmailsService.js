@@ -124,7 +124,7 @@ const EmailsService = {
         const response = await EmailsService.getEmailsFromServer(employeeId, email, password, 'INBOX',lastKnownUID);
         if (response.length > 0) {
             console.log(`Se han obtenido ${response.length} correos`);
-            await MongoService.insertEmail(response);
+            await MongoService.insertEmails(response);
             console.log(`Se añadieron ${response.length} correos nuevos para ${employeeId}`)
 
             lastKnownUID = response.reduce((max, item) => item.uid > max ? item.uid : max, 0);
