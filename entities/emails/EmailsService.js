@@ -140,11 +140,10 @@ const EmailsService = {
     syncEmails: async (employee) => {
         console.log(`Iniciando sincronizacion de correos para ${employee.name} ${employee.last_name}`);
         const employeeCredentialsInformation = await MongoService.getEmployee(employee.id);
-        console.log(employeeCredentialsInformation);
 
         await EmailsService.syncAllEmailsForEmployee(employee.id, employee.email, employeeCredentialsInformation.password);
        
-        await EmailsService.syncReadEmailsForEmployee(employee.id);
+        await EmailsService.syncReadEmailsForEmployee(employee.id, employee.email, employeeCredentialsInformation.password);
 
         return {};       
     },

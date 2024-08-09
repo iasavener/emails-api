@@ -15,28 +15,36 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
     last_name: {
-      type: DataTypes.STRING,
-      allowNull: true
+        type: DataTypes.STRING,
+        allowNull: true
     },
     role: {
-      type: DataTypes.STRING,
-      allowNull: true
+        type: DataTypes.STRING,
+        allowNull: true
     },
     phone_number: {
       type: DataTypes.STRING,
       allowNull: true
     },
     extension: {
-      type: DataTypes.STRING,
-      allowNull: true
+        type: DataTypes.STRING,
+        allowNull: true
     },
     email: {
       type: DataTypes.STRING,
       allowNull: true
     },
+    active: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
+    },
+    language: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     provider: {
-      type: DataTypes.INTEGER,
-      allowNull: false
+        type: DataTypes.INTEGER,
+        allowNull: false
     },
     created_by: {
       type: DataTypes.INTEGER,

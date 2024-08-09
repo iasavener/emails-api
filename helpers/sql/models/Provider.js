@@ -16,24 +16,30 @@ module.exports = (sequelize) => {
       unique: true
     },
     address: {
-      type: DataTypes.STRING,
-      allowNull: true
+        type: DataTypes.STRING,
+        allowNull: true
     },
-    phone_number: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    email: {
+    country: {
       type: DataTypes.STRING,
       allowNull: true
     },
     responsible: {
-      type: DataTypes.INTEGER,
-      allowNull: false
+        type: DataTypes.INTEGER,
+        allowNull: false
     },
     nif: {
-      type: DataTypes.STRING,
-      allowNull: true
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    relation: {
+      type: DataTypes.ENUM,
+      values: ["A", "B"],
+      defaultValue: "B",
+      allowNull: false,
+    },
+    incorporation_date: {
+      type: DataTypes.DATE,
+      allowNull: true,
     },
     created_by: {
       type: DataTypes.INTEGER,
