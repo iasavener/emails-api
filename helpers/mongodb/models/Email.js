@@ -9,7 +9,7 @@ mongoose.set("debug", false);
 
 const EmailSchema = new mongoose.Schema(
   {
-    user_id: String,
+    employee_id: Number,
     from: String,
     to: String,
     subject: String,
@@ -30,34 +30,6 @@ const EmailSchema = new mongoose.Schema(
   }
 );
 
-//secret key
-const secretKey = 'mi-clave-secreta';
-
-//encriptar los campos
-const encryptFields =  (email) => {
-  const fields = ['from','subject', 'body'];
-  for (let field of fields) {
-    if (email[field]) {
-      const encrypted = CryptoJS.AES.encrypt(email[field], secretKey).toString();
-      email[field] = encrypted;
-    }
-  }
-  return email;
-}
-
-//desencriptar los campos
-const decryptFields = (email) => {
-  const fields = ['from','subject', 'body'];
-  for (let field of fields) {
-    if (email[field]) {
-      const bytes = CryptoJS.AES.decrypt(email[field], secretKey);
-      const decrypted = bytes.toString(CryptoJS.enc.Utf8);
-      email[field] = decrypted;
-    }
-  }
-  return email;
-}
-
 EmailSchema.plugin(mongoosePaginate);
 EmailSchema.plugin(mongooseDelete, { deletedAt: true, deletedBy: true });
 
@@ -65,7 +37,5 @@ const Email = mongoose.model('Email', EmailSchema)
 
 
 module.exports = {
-  Email, 
-  encryptFields,
-  decryptFields
+  Email
 }

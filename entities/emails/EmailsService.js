@@ -3,17 +3,16 @@ const {simpleParser} = require('mailparser');
 const moment = require('moment');
 const AppError = require('../../helpers/AppError');
 const Utils = require('../../utils/Utils');
-const Database = require('../../Database');
 const Config = require('../../config');
-const MongoService = require('../../database/MongoService');
+const MongoService = require('../../helpers/mongodb/MongoService');
 
 const EmailsService = {
     //Coge los correos del servidor de mails
-    getEmailsFromServer: async (user, folder = 'INBOX', lastKnownUID, status = 'ALL') => {
+    getEmailsFromServer: async (employeeId, email, password, folder = 'INBOX', lastKnownUID, status = 'ALL') => {
         const config = {
             imap: {
-                user:  "cristian.estrada@savener.es",
-                password: "?Z8jh623q",
+                user: email,
+                password,
                 host:  Config.IMAP_EMAIL_SERVER,
                 port: 993,
                 tls: true,
@@ -55,7 +54,7 @@ const EmailsService = {
                 size: att.size,
                 content: att.content.toString('base64')
             }));
-            project_id: await classifyEmail()
+            // project_id: await classifyEmail()
             
 
             return { uid, subject, from, date, to, read, body,  attachments };
@@ -64,7 +63,7 @@ const EmailsService = {
 
         return emails.filter(email => email !== null).map((email)=> {
                 return {
-                    user_id: user.id,
+                    employee_id: employeeId,
                     from: email.from,
                     subject: email.subject,
                     date: email.date,
@@ -76,28 +75,28 @@ const EmailsService = {
         
     },
     //Actualizamos los mails leidos
-    syncReadEmailsForUser: async (user) => {
-        console.log(`Sincronizando emails leídos para el usuario ${user.name} ${user.last_name}`);
+    syncReadEmailsForEmployee: async (employeeId, email, password) => {
+        console.log(`Sincronizando emails leídos para el empleado ${employeeId}`);
         try {
-            const serverEmails = await EmailsService.getEmailsFromServer(user, 'INBOX', null, 'UNSEEN');
+            const serverEmails = await EmailsService.getEmailsFromServer(employeeId, email, password, 'INBOX', null, 'UNSEEN');
             const serverUnreadEmailsUid = serverEmails.map(email => email.uid);
             console.log('Correos no leidos desde el servidor: ', serverUnreadEmailsUid.length);
            
          
 
-            let storedEmails = await MongoService.countEmails(user.id);
-            let storedUnreadEmails = await MongoService.countUnReadEmails(user.id);
+            let storedEmails = await MongoService.countEmails(employeeId);
+            let storedUnreadEmails = await MongoService.countUnReadEmails(employeeId);
             console.log('Correos almacenados en la base de datos: ', storedEmails);
             console.log('Correos almacenados en la base de datos no leídos: ', storedUnreadEmails);
 
          
-            const updatedDocuments =  await MongoService.setReadEmails(user.id, serverUnreadEmailsUid);
+            const updatedDocuments =  await MongoService.setReadEmails(employeeId, serverUnreadEmailsUid);
             console.log('Correos a actualizar como leidos: ', updatedDocuments.modifiedCount);
             
             
             
-            storedEmails = await MongoService.countEmails(user.id);
-            storedUnreadEmails = await MongoService.countUnReadEmails(user.id);
+            storedEmails = await MongoService.countEmails(employeeId);
+            storedUnreadEmails = await MongoService.countUnReadEmails(employeeId);
             console.log('Correos almacenados en la base de datos: ', storedEmails);
             console.log('Correos almacenados en la base de datos no leídos: ', storedUnreadEmails);
 
@@ -106,61 +105,64 @@ const EmailsService = {
         }
     },
     //sincronizar emails
-    syncAllEmailsForUser: async (user) => {
-        console.log(`Sincronizando emails para el usuario ${user.name} ${user.last_name}`);
+    syncAllEmailsForEmployee: async (employeeId, email, password) => {
+        console.log(`Sincronizando emails para el empleado ${employeeId}`);
       
-        const lastExecution = await MongoService.getLastExecution(user.id);
+        const lastExecution = await MongoService.getLastExecution(employeeId);
         let lastKnownUID = lastExecution?.last_known_uid;
 
         if (lastExecution) {
-            console.log(`La ultima vez que se sincronizaron los correos para ${user.name} ${user.last_name} fue el ${lastExecution.createdAt}`)
+            console.log(`La ultima vez que se sincronizaron los correos para ${employeeId} fue el ${lastExecution.createdAt}`)
         } else {
-            console.log('Nunca se han sincronizado los correos de este usuario')
+            console.log('Nunca se han sincronizado los correos de este empleado')
         }
 
         if (lastKnownUID) {
             console.log(`El último correo sincronizado fue el UID: ${lastKnownUID}`)
         }
 
-        const response = await EmailsService.getEmailsFromServer(user,'INBOX',lastKnownUID);
+        const response = await EmailsService.getEmailsFromServer(employeeId, email, password, 'INBOX',lastKnownUID);
         if (response.length > 0) {
-            await MongoService.saveEmail(response);
-            console.log(`Se añadieron ${response.length} correos nuevos para ${user.name} ${user.last_name}`)
+            console.log(`Se han obtenido ${response.length} correos`);
+            await MongoService.insertEmail(response);
+            console.log(`Se añadieron ${response.length} correos nuevos para ${employeeId}`)
 
-            lastKnownUID = response.reduce((max, email) => email.uid > max ? email.uid : max, 0);
-            await MongoService.saveExecution(user.id, lastKnownUID);
-            console.log(`Ultimo UID actualizado para ${user.name} ${user.last_name} es ${lastKnownUID}`)
+            lastKnownUID = response.reduce((max, item) => item.uid > max ? item.uid : max, 0);
+            await MongoService.saveExecution(employeeId, lastKnownUID);
+            console.log(`Ultimo UID actualizado para ${employeeId} es ${lastKnownUID}`)
         }else {
-            console.log(`No se encontraron correos nuevos para ${user.name} ${user.last_name}`);
+            console.log(`No se encontraron correos nuevos para ${employeeId}`);
 
         }
         
     },
 
-    syncEmails: async (user) => {
-        console.log(user);
-        console.log(`Iniciando sincronizacion de correos para ${user.name} ${user.last_name}`);
-        await EmailsService.syncAllEmailsForUser(user);
+    syncEmails: async (employee) => {
+        console.log(`Iniciando sincronizacion de correos para ${employee.name} ${employee.last_name}`);
+        const employeeCredentialsInformation = await MongoService.getEmployee(employee.id);
+        console.log(employeeCredentialsInformation);
+
+        await EmailsService.syncAllEmailsForEmployee(employee.id, employee.email, employeeCredentialsInformation.password);
        
-        await EmailsService.syncReadEmailsForUser(user);
+        await EmailsService.syncReadEmailsForEmployee(employee.id);
 
         return {};       
     },
 
-    getEmails: async (user, query) => {
-        const emails = await MongoService.getEmails(user.id, query.page, query.page_size);       
+    getEmails: async (employee, query) => {
+        const emails = await MongoService.getEmails(employee.id, query.page, query.page_size);       
         
         return emails;
     },
 
 
-    discardEmail: async (user, uid) => {
-        await MongoService.discardEmail(user.id, uid);       
+    discardEmail: async (employee, uid) => {
+        await MongoService.discardEmail(employee.id, uid);       
         return {};
     },
 
-    saveEmail: async (user, uid) => {
-        await MongoService.saveEmail(user.id, uid);       
+    saveEmail: async (employee, uid) => {
+        await MongoService.saveEmail(employee.id, uid);       
         return {};
     }
 };

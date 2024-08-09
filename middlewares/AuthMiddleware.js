@@ -10,7 +10,7 @@ AuthMiddleware.checkToken = async function (req, res, next) {
     await axios.get(`${Config.AUTH_API_URL}validate-token`, {headers: {authorization: req.headers['authorization']}})
     token = token.replace('Bearer ', '')
     const decoded = await jwt.decode(token);
-    res.locals.user = decoded;
+    res.locals.employee = decoded;
     next();
 
   } catch (error) {

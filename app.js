@@ -3,45 +3,56 @@ const path = require ('path');
 const bodyParser = require('body-parser');
 const EmailsService = require('./entities/emails/EmailsService');
 const app = express();
-const Database = require('./Database')
 const Config = require('./config');
-const MongoService = require("./database/MongoService");
+const MongoService = require("./helpers/mongodb/MongoService");
 const cors = require("cors");
 const routes = require("./routes");
+const { Employee, sequelize } = require('./helpers/sql/associations');
+const { decryptFields } = require('./helpers/mongodb/MongoUtils');
 
-MongoService.init();
+const startServer = async () => {
 
-app.use(bodyParser.urlencoded({extended: false}))
-app.use(bodyParser.json());
-app.use(cors());
-
-app.use('/', routes);
-
-app.use(express.static(path.join(__dirname, 'public')));
-
-const syncAllEmails = async () => {
+    await MongoService.init();
     try {
-        console.log("Sincronizando emails para todos los usuarios");
-        const users = Database.getUsers();
-        const usersToSync = users.filter((user) => user.id !== 1);
-      
-        for (const user of usersToSync) {
-            await EmailsService.syncAllEmailsForUser(user);
-            await EmailsService.syncReadEmailsForUser(user);
-        }
+        await sequelize.authenticate();
+        await sequelize.sync({});
+        console.log('Conexión con la base de datos general establecida con éxito.');
     } catch (error) {
-        console.error(error)
-        // TODO (PENDIENTE DE DECIDIR): ENVIAR NOTIFICACIÓN DE FALLO O REGISTRAR EVENTO EN BASE DE DATOS
+        console.error('Error al conectar o sincrizar la base de datos :', error);
     }
+
+    app.use(bodyParser.urlencoded({extended: false}))
+    app.use(bodyParser.json());
+    app.use(cors());
+    
+    app.use('/', routes);
+    
+    app.use(express.static(path.join(__dirname, 'public')));
+    
+    const syncAllEmails = async () => {
+        try {
+            console.log("Sincronizando emails para todos los empleados");
+            const employees = await MongoService.getEmployees();
+            for (const employee of employees) {
+                const decryptedEmployee = decryptFields(employee, ['password']);
+                const employeeInformation = await Employee.findOne({where: {id: employee.employee_id}});
+                await EmailsService.syncAllEmailsForEmployee(employee.employee_id, employeeInformation.dataValues.email, decryptedEmployee.password);
+                await EmailsService.syncReadEmailsForEmployee(employee.employee_id, employeeInformation.dataValues.email, decryptedEmployee.password);
+            }
+
+        } catch (error) {
+            console.error(error)
+        }
+    }
+    
+    // syncAllEmails()
+    
+    // setInterval(syncAllEmails, 100000);
+    
+    app.listen(Config.PORT, ()=>{
+        console.log('Escuchando por el puerto 3002');
+    })
 }
 
-// syncAllEmails()
 
-// setInterval(syncAllEmails, 100000);
-
-app.listen(Config.PORT, ()=>{
-    console.log('Escuchando por el puerto 3002');
-})
-
-
-
+startServer();

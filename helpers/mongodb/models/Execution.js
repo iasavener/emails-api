@@ -7,7 +7,7 @@ mongoose.set("debug", false);
 
 const ExecutionSchema = new mongoose.Schema(
   {
-    user_id: String,
+    employee_id: String,
     date: Date,
     last_known_uid: Number 
   },

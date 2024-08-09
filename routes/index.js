@@ -16,19 +16,81 @@ const AuthMiddleware = require('../middlewares/AuthMiddleware');
 
 router.get('/', AuthMiddleware.checkToken, async (req, res)=> {
     await EmailsController.getEmails(req, res)
-})
+});
 
 router.post('/sync', AuthMiddleware.checkToken, async (req, res)=> {
     await EmailsController.syncEmails(req, res)
-})
+});
 
 router.post('/:uid/discard', AuthMiddleware.checkToken, async (req, res)=> {
     await EmailsController.discardEmail(req, res)
-})
+});
 
 router.post('/:uid/save', AuthMiddleware.checkToken, async (req, res)=> {
     await EmailsController.saveEmail(req, res)
-})
+});
+
+router.post('/notify', upload.array('attachments'), async (req, res)=> {
+    const {to, subject, message} = req.body;
+
+    let empleado = 'beatriz.jarauta'
+    const contentHTML = `<p>${message}</p>`;
+
+
+    function obtenerFirma(empleado){
+        let firmaPath = path.join('signatures', `${empleado}.html`);
+        console.log(firmaPath)
+
+
+        try{
+            return fs.readFileSync(firmaPath, 'utf-8');
+        }catch (error) {
+            console.error(`No se pudo leer la firma para el empleado: ${empleado}`)
+            return '';
+        }
+    }
+
+    let firmaHTML = obtenerFirma(empleado)
+
+    
+
+    
+    let transporter = nodemailer.createTransport({
+        host: Config.IMAP_EMAIL_SERVER,
+        port: 465,
+        secure: true,
+        auth: {
+            user:  process.env.USER,
+            pass: process.env.PASS
+        },
+        tls: {
+            rejectUnauthorized: false
+        }
+    });
+
+    try {
+        const attachments = req?.files?.map(file => ({
+            filename: file.originalname,
+            path: file.path
+        }));
+
+    let info = await transporter.sendMail({
+
+        from:  process.env.USER,
+        to: to,
+        subject: subject,
+        html: `${contentHTML}<br><br>${firmaHTML}`
+        // attachments: attachments
+
+    });
+
+    console.log('Message sent: ', info.messageId);
+    res.status(200).send('Correo enviado correctamente');
+} catch(error) {
+    console.error(error);
+    res.status(500).send('error mandando mail');
+ }
+});
 
 router.get("/status", function status(req, res) {
     return res.json({
