@@ -3,13 +3,12 @@
 const mongoose = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate-v2");
 const mongooseDelete = require("mongoose-delete");
-const CryptoJS = require('crypto-js');
 mongoose.set("debug", false);
 
 
 const EmailSchema = new mongoose.Schema(
   {
-    employee_id: Number,
+    employee_id: String,
     from: String,
     to: String,
     subject: String,

@@ -10,21 +10,21 @@ const MongoService = {
     init: async () => {
       await MongoService.connect();
       mongoose.connection.on("disconnected", () => console.log("disconnected"));
-      mongoose.connection.on("connected", () => console.log("Conexión con las base de datos de correos electrónicos establecida correctamente"));
+      mongoose.connection.on("connected", () => console.log("connected"));
       mongoose.connection.on("connecting", () => console.log("connecting"));
       mongoose.connection.on("disconnecting", () => console.log("disconnecting"));
     },
   
     connect: async () => {
       try {
-        console.log(`Conectando a la base de datos de correos electrónicos`, {
+        console.log(`Conectando a la BD`, {
           host: `${Config.MONGO_URI}`,
         });
   
         await mongoose.connect(`${Config.MONGO_URI}`);
       } catch (err) {
         console.error(
-          `Error al conectar a la base d edatos de correos electrónicos, retrying in 5 sec`,
+          `Error al conectar a la BD, retrying in 5 sec`,
           {
             err: err.message,
           }
@@ -37,11 +37,12 @@ const MongoService = {
       mongoose.connection.close();
     },
 
-    createEmployee: async (employeeId, password) => {
+    createEmployee: async (employeeId, password, signature) => {
       try {
         const employee = {
           employee_id: employeeId,
-          password
+          password,
+          signature
         };
         const encryptedEmployee = encryptFields(employee, ['password']);
 
@@ -51,6 +52,10 @@ const MongoService = {
         console.error('Error al guardar el empleado', err);
         throw err;
       }
+    },
+
+    updateEmployee: async (employee_id, data) => {
+      return await Employee.updateOne( {employee_id}, {$set: data});
     },
 
     saveEmail: async (emailData) => {
@@ -92,7 +97,7 @@ const MongoService = {
           .skip(skip)
           .limit(limit);
 
-      const decryptedEmails = emails.map((email) => decryptFields(email.toObject(), ['from','subject', 'body']));
+      const decryptedEmails = emails.map((email) => decryptFields(email.toObject()));
 
       return {
           total_items: totalItems,
@@ -104,20 +109,6 @@ const MongoService = {
       return await Email.updateOne( {uid, employee_id}, {$set: {discarded: true}});
     },
     
-    insertEmail: async (emailData) => {
-      
-      try {
-        const encryptedEmails = emailData.map((email) => encryptFields(email, ['from', 'subject', 'body']));
-
-        await Email.insertMany(encryptedEmails);
-
-      } catch (err){
-        console.error('Error al guardar los correos electronicos', err);
-        throw err;
-
-      }
-    },
-  
     saveEmail: async (employee_id, uid) => {
       return await Email.updateOne( {uid, employee_id}, {$set: {saved: true}});
     },
@@ -148,14 +139,6 @@ const MongoService = {
     getLastExecution: async (employee_id) => {
       return await Execution.findOne({employee_id}).sort({date: -1});
     },
-    
-    getEmployees: async () => {
-      return await Employee.find();
-    },
-
-    getEmployee: async (employeeId) => {
-      return await Employee.find({employee_id: employeeId});
-    }
 };
 
 module.exports = MongoService;

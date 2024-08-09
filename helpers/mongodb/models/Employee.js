@@ -3,13 +3,13 @@
 const mongoose = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate-v2");
 const mongooseDelete = require("mongoose-delete");
-const CryptoJS = require('crypto-js');
 mongoose.set("debug", false);
 
 const EmployeeSchema = new mongoose.Schema(
   {
     employee_id: Number,
-    password: String
+    password: String,
+    signature: String,
   },
   {
     strict: false,
