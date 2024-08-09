@@ -139,6 +139,14 @@ const MongoService = {
     getLastExecution: async (employee_id) => {
       return await Execution.findOne({employee_id}).sort({date: -1});
     },
+  
+    getEmployees: async () => {
+      return await Employee.find();
+    },
+
+    getEmployee: async (employeeId) => {
+      return await Employee.find({employee_id: employeeId});
+    }
 };
 
 module.exports = MongoService;
