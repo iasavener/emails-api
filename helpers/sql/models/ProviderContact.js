@@ -39,7 +39,7 @@ module.exports = (sequelize) => {
       defaultValue: true
     },
     language: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       allowNull: true
     },
     provider: {

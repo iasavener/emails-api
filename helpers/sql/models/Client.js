@@ -32,15 +32,7 @@ module.exports = (sequelize) => {
       allowNull: true
     },
     country: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    phone_number: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       allowNull: true
     },
     created_by: {

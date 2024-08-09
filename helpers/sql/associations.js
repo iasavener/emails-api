@@ -186,6 +186,10 @@ Client.belongsToMany(Sector, { through: ClientSector, foreignKey: 'client_id', o
 Sector.belongsToMany(Client, { through: ClientSector, foreignKey: 'sector_id', otherKey: 'client_id', as: 'clients' });
 Provider.belongsToMany(Sector, { through: ProviderSector, foreignKey: 'provider_id', otherKey: 'sector_id', as: 'sectors' });
 Sector.belongsToMany(Provider, { through: ProviderSector, foreignKey: 'sector_id', otherKey: 'provider_id', as: 'providers' });
+Client.belongsTo(Country, { foreignKey: 'country' });
+Provider.belongsTo(Country, { foreignKey: 'country' });
+ClientContact.belongsTo(Language, { foreignKey: 'language' });
+ProviderContact.belongsTo(Language, { foreignKey: 'language' });
 
 
 module.exports = {
