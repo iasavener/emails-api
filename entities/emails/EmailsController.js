@@ -16,7 +16,7 @@ const EmailsController = {
   },
 
   saveEmail: async (req, res) => {
-    return ResponseHelper.getResponse(res, EmailsService.saveEmail, [res.locals.employee, req.params.uid]);
+    return ResponseHelper.getResponse(res, EmailsService.saveEmail, [res.locals.employee, req.params.uid, req.body]);
   },
 
   notify: async (req, res) => {

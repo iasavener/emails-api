@@ -113,6 +113,10 @@ const MongoService = {
     saveEmail: async (employee_id, uid) => {
       return await Email.updateOne( {uid, employee_id}, {$set: {saved: true}});
     },
+
+    updateProjectAssigned: async (employee_id, uid, project_id, projectName) => {
+      return await Email.updateOne( {uid, employee_id}, {$set: {project_id, project_name: projectName}});
+    },
   
     setEmails: async (employee_id, emails) => {
       return   await Email.insertMany(emails.map(email => ({...email, employee_id})), {ordered: false});

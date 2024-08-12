@@ -7,6 +7,7 @@ const Config = require('../../config');
 const MongoService = require('../../helpers/mongodb/MongoService');
 const { Employee } = require('../../helpers/sql/associations');
 const nodemailer = require('nodemailer');
+const { Project } = require('../../helpers/sql/associations');
 
 const EmailsService = {
     //Coge los correos del servidor de mails
@@ -162,7 +163,11 @@ const EmailsService = {
         return {};
     },
 
-    saveEmail: async (employee, uid) => {
+    saveEmail: async (employee, uid, data) => {
+        if (data.project_id) {
+            const project = await Project.findOne({id: data.project_id})
+            await MongoService.updateProjectAssigned(employee.id, uid, data.project_id, project.dataValues.name);
+        }
         await MongoService.saveEmail(employee.id, uid);       
         return {};
     },
