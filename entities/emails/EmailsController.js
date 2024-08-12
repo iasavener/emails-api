@@ -17,7 +17,11 @@ const EmailsController = {
 
   saveEmail: async (req, res) => {
     return ResponseHelper.getResponse(res, EmailsService.saveEmail, [res.locals.employee, req.params.uid]);
-  }
+  },
+
+  notify: async (req, res) => {
+    return ResponseHelper.getResponse(res, EmailsService.notify, [req.body, req.file])
+  },
 
 };
 

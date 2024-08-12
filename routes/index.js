@@ -1,95 +1,44 @@
 const {Router} = require('express');
 const router = Router();
-
-const nodemailer = require('nodemailer');
-const imaps = require('imap-simple');
-const {simpleParser} = require('mailparser');
-const fs = require('fs')
-const upload = require('../middlewares/multer');
 const path = require('path');
-const moment = require('moment');
 const EmailsController = require('../entities/emails/EmailsController');
 require('dotenv').config();
-const Config = require('../config');
 const AuthMiddleware = require('../middlewares/AuthMiddleware');
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, path.join(__dirname, '../uploads/'));
+    },
+    filename: function (req, file, cb) {
+        cb(null, `${Date.now()}--${file.originalname}`);
+    }
+});
+
+const upload = multer({storage: storage});
+
+const memoryStorage = multer.memoryStorage();
+const uploadMemory = multer({ storage: memoryStorage });
 
 
 router.get('/', AuthMiddleware.checkToken, async (req, res)=> {
-    await EmailsController.getEmails(req, res)
+    await EmailsController.getEmails(req, res);
 });
 
 router.post('/sync', AuthMiddleware.checkToken, async (req, res)=> {
-    await EmailsController.syncEmails(req, res)
+    await EmailsController.syncEmails(req, res);
 });
 
 router.post('/:uid/discard', AuthMiddleware.checkToken, async (req, res)=> {
-    await EmailsController.discardEmail(req, res)
+    await EmailsController.discardEmail(req, res);
 });
 
 router.post('/:uid/save', AuthMiddleware.checkToken, async (req, res)=> {
     await EmailsController.saveEmail(req, res)
 });
 
-router.post('/notify', upload.array('attachments'), async (req, res)=> {
-    const {to, subject, message} = req.body;
-
-    let empleado = 'beatriz.jarauta'
-    const contentHTML = `<p>${message}</p>`;
-
-
-    function obtenerFirma(empleado){
-        let firmaPath = path.join('signatures', `${empleado}.html`);
-        console.log(firmaPath)
-
-
-        try{
-            return fs.readFileSync(firmaPath, 'utf-8');
-        }catch (error) {
-            console.error(`No se pudo leer la firma para el empleado: ${empleado}`)
-            return '';
-        }
-    }
-
-    let firmaHTML = obtenerFirma(empleado)
-
-    
-
-    
-    let transporter = nodemailer.createTransport({
-        host: Config.IMAP_EMAIL_SERVER,
-        port: 465,
-        secure: true,
-        auth: {
-            user:  process.env.USER,
-            pass: process.env.PASS
-        },
-        tls: {
-            rejectUnauthorized: false
-        }
-    });
-
-    try {
-        const attachments = req?.files?.map(file => ({
-            filename: file.originalname,
-            path: file.path
-        }));
-
-    let info = await transporter.sendMail({
-
-        from:  process.env.USER,
-        to: to,
-        subject: subject,
-        html: `${contentHTML}<br><br>${firmaHTML}`
-        // attachments: attachments
-
-    });
-
-    console.log('Message sent: ', info.messageId);
-    res.status(200).send('Correo enviado correctamente');
-} catch(error) {
-    console.error(error);
-    res.status(500).send('error mandando mail');
- }
+router.post('/notify-employees', AuthMiddleware.checkToken, uploadMemory.single('attachment'), async (req, res)=> {
+    await EmailsController.notify(req, res);
 });
 
 router.get("/status", function status(req, res) {

@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Config = require('../../config');
 const { Email } = require('./models/Email');
 const { Employee } = require('./models/Employee');
+const { NotificationsSettings } = require('./models/NotificationsSettings');
 const { encryptFields, decryptFields } = require('./MongoUtils');
 
 const Execution = require('./models/Execution');
@@ -97,7 +98,7 @@ const MongoService = {
           .skip(skip)
           .limit(limit);
 
-      const decryptedEmails = emails.map((email) => decryptFields(email.toObject()));
+      const decryptedEmails = emails.map((email) => decryptFields(email.toObject(), ["from", "subject", "body"]));
 
       return {
           total_items: totalItems,
@@ -146,6 +147,12 @@ const MongoService = {
 
     getEmployee: async (employeeId) => {
       return await Employee.find({employee_id: employeeId});
+    },
+
+    getNotificationsSettings: async () => {
+      const notificationsSettings = await NotificationsSettings.findOne();
+      return decryptFields(notificationsSettings, ["email", "password"]);
+
     }
 };
 
