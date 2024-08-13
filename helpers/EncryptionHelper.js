@@ -1,7 +1,4 @@
-
-const mongoose = require("mongoose");
 const CryptoJS = require('crypto-js');
-mongoose.set("debug", false);
 
 const secretKey = 'mi-clave-secreta';
 
