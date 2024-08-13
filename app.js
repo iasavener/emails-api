@@ -6,6 +6,7 @@ const Config = require('./config');
 const MongoService = require("./helpers/mongodb/MongoService");
 const cors = require("cors");
 const routes = require("./routes");
+const { sequelize } = require('./helpers/sql/associations');
 
 const startServer = async () => {
 
