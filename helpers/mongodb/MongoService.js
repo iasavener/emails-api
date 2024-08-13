@@ -3,8 +3,7 @@ const Config = require('../../config');
 const { Email } = require('./models/Email');
 const { Employee } = require('./models/Employee');
 const { NotificationsSettings } = require('./models/NotificationsSettings');
-const { encryptFields, decryptFields } = require('./MongoUtils');
-
+const { encryptFields, decryptFields } = require('../../helpers/EncryptionHelper');
 const Execution = require('./models/Execution');
 
 const MongoService = {
@@ -60,7 +59,6 @@ const MongoService = {
     },
 
     insertEmails: async (emailData) => {
-      
       try {
         const encryptedEmails = emailData.map((email) => encryptFields(email, ['from','subject', 'body']));
 
@@ -137,12 +135,13 @@ const MongoService = {
       return Email.countDocuments({employee_id, read: false});
     },
 
-    saveExecution: (employee_id, lastKnownUid) => {
+    saveExecution: async (employee_id, lastKnownUid) => {
+      await Execution.updateMany({employee_id}, {deleted: true});
       return new Execution({employee_id, last_known_uid: lastKnownUid}).save();
     },
 
     getLastExecution: async (employee_id) => {
-      return await Execution.findOne({employee_id}).sort({date: -1});
+      return await Execution.findOne({employee_id, deleted: false}).sort({date: -1});
     },
   
     getEmployees: async () => {
@@ -156,8 +155,32 @@ const MongoService = {
     getNotificationsSettings: async () => {
       const notificationsSettings = await NotificationsSettings.findOne();
       return decryptFields(notificationsSettings, ["email", "password"]);
+    },
 
-    }
+    updateClassification: async (uid, project_id, projectName) => {
+      console.log(uid, project_id, projectName)
+      return await Email.updateOne(
+        {
+          uid,
+          $or: [
+            { discard: { $exists: false } },
+            { discard: false }
+          ],
+          $or: [
+            { saved: { $exists: false } },
+            { saved: false }
+          ]
+        },
+        {
+          $set: {
+            project_id,
+            project_name: projectName,
+            suggested_project_id: project_id,
+            suggested_project_name: projectName
+          }
+        }
+      );
+    },
 };
 
 module.exports = MongoService;

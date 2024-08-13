@@ -25,10 +25,6 @@ router.get('/', AuthMiddleware.checkToken, async (req, res)=> {
     await EmailsController.getEmails(req, res);
 });
 
-router.post('/sync', AuthMiddleware.checkToken, async (req, res)=> {
-    await EmailsController.syncEmails(req, res);
-});
-
 router.post('/:uid/discard', AuthMiddleware.checkToken, async (req, res)=> {
     await EmailsController.discardEmail(req, res);
 });
