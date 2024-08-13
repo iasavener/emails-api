@@ -31,6 +31,12 @@ module.exports = (sequelize) => {
     expected_completion_date: {
       type: DataTypes.DATE
     },
+    original_date: {
+      type: DataTypes.DATE
+    },
+    path: {
+      type: DataTypes.STRING
+    },
     start_date: {
       type: DataTypes.DATE
     },

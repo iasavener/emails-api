@@ -106,6 +106,8 @@ EmployeeStatus.belongsTo(Employee, { foreignKey: 'updated_by', as: 'editor' });
 Project.belongsToMany(Employee, { through: ProjectEmployee, foreignKey: 'project_id', otherKey: 'employee_id', as: 'employees' });
 Employee.belongsToMany(Project, { through: ProjectEmployee, foreignKey: 'employee_id', otherKey: 'project_id', as: 'projects' });
 
+ProjectEmployee.belongsTo(Project, { foreignKey: 'project_id' });
+ProjectEmployee.belongsTo(Employee, { foreignKey: 'employee_id' });
 
 Document.belongsToMany(Employee, { through: DocumentEmployee, foreignKey: 'document_id', otherKey: 'employee_id', as: 'employees' });
 Employee.belongsToMany(Document, { through: DocumentEmployee, foreignKey: 'employee_id', otherKey: 'document_id', as: 'documents' });
