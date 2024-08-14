@@ -18,6 +18,11 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    comunication: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true
+    },
     uploaded_by: {
       type: DataTypes.INTEGER,
       allowNull: false
