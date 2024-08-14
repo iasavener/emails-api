@@ -18,7 +18,7 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    comunication: {
+    communication: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: true
