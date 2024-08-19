@@ -13,15 +13,23 @@ module.exports = (sequelize) => {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: false
     },
     created_by: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true
     },
     updated_by: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true
+    },
+    deleted: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    deleted_by: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     }
   }, {
     sequelize,
