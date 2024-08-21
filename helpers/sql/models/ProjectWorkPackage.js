@@ -48,7 +48,18 @@ module.exports = (sequelize) => {
     status: {
       type: DataTypes.ENUM('Pendiente', 'Activo', 'Finalizado'),
       defaultValue: 'Pendiente',
-      allowNull: false
+    },
+    in_progress: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    proposed: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
+    },
+    completed: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     },
     activation_date: {
       type: DataTypes.DATE,
