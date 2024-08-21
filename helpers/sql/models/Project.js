@@ -19,7 +19,22 @@ module.exports = (sequelize) => {
     },
     status_id: {
       type: DataTypes.INTEGER,
-      allowNull: false
+    },
+    in_progress: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    blocked: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    proposed: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    completed: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     },
     client_id: {
       type: DataTypes.INTEGER,
