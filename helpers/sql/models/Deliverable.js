@@ -30,6 +30,10 @@ module.exports = (sequelize) => {
     deleted_by: {
       type: DataTypes.INTEGER,
       allowNull: true
+    },
+    active: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
     }
   }, {
     sequelize,
