@@ -53,10 +53,6 @@ module.exports = (sequelize) => {
     estimated_days: {
       type: DataTypes.INTEGER
     },
-    status: {
-      type: DataTypes.ENUM('Pendiente', 'Activo', 'Finalizado'),
-      defaultValue: 'Pendiente',
-    },
     in_progress: {
       type: DataTypes.BOOLEAN,
       defaultValue: false

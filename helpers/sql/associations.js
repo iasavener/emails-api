@@ -13,7 +13,6 @@ const PlatformSectionAllowed = require('./models/PlatformSectionAllowed')(sequel
 const Project = require('./models/Project')(sequelize);
 const ProjectDeliverable = require('./models/ProjectDeliverable')(sequelize);
 const ProjectEmployee = require('./models/ProjectEmployee')(sequelize);
-const ProjectStatus = require('./models/ProjectStatus')(sequelize);
 const Role = require('./models/Role')(sequelize);
 const Task = require('./models/Task')(sequelize);
 const TimeRecord = require('./models/TimeRecord')(sequelize);
@@ -112,11 +111,6 @@ ProjectEmployee.belongsTo(Employee, { foreignKey: 'employee_id' });
 Document.belongsToMany(Employee, { through: DocumentEmployee, foreignKey: 'document_id', otherKey: 'employee_id', as: 'employees' });
 Employee.belongsToMany(Document, { through: DocumentEmployee, foreignKey: 'employee_id', otherKey: 'document_id', as: 'documents' });
 
-Project.belongsTo(ProjectStatus, { foreignKey: 'status_id', as: 'status' });
-ProjectStatus.hasMany(Project, { foreignKey: 'status_id' });
-ProjectStatus.belongsTo(Employee, { foreignKey: 'created_by', as: 'creator' });
-ProjectStatus.belongsTo(Employee, { foreignKey: 'updated_by', as: 'editor' });
-
 Project.belongsToMany(ProjectStage, { through: ProjectStagesAssigned, foreignKey: 'project_id', otherKey: 'project_stage_id', as: 'stages' });
 ProjectStage.belongsToMany(Project, { through: ProjectStagesAssigned, foreignKey: 'project_stage_id', otherKey: 'project_id', as: 'projects' });
 ProjectStage.belongsTo(Employee, { foreignKey: 'created_by', as: 'creator' });
@@ -210,7 +204,6 @@ module.exports = {
     ProjectDeliverable,
     ProjectEmployee,
     EmployeeWorkShift,
-    ProjectStatus,
     Role,
     Task,
     TimeRecord,

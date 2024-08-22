@@ -17,9 +17,6 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    status_id: {
-      type: DataTypes.INTEGER,
-    },
     in_progress: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
