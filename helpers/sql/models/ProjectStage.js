@@ -22,6 +22,18 @@ module.exports = (sequelize) => {
     updated_by: {
       type: DataTypes.INTEGER,
       allowNull: true
+    },
+    deleted: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    deleted_by: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    active: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
     }
   }, {
     sequelize,
