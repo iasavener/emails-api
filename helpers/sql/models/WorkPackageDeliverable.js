@@ -29,7 +29,15 @@ module.exports = (sequelize) => {
     updated_by: {
       type: DataTypes.INTEGER,
       allowNull: false
-    }
+    },
+    deleted: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    deleted_by: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
   }, {
     sequelize,
     modelName: 'WorkPackageDeliverable',
