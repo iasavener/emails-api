@@ -80,7 +80,15 @@ module.exports = (sequelize) => {
     closed_by: {
       type: DataTypes.INTEGER,
       allowNull: true
-    }
+    },
+    deleted: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    deleted_by: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
   }, {
     sequelize,
     modelName: 'ProjectWorkPackage',
