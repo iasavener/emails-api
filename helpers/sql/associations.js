@@ -43,6 +43,8 @@ const Offer = require('./models/Offer')(sequelize);
 const OfferRequest = require('./models/OfferRequest')(sequelize);
 const OfferLossReason = require('./models/OfferLossReason')(sequelize);
 const OfferStage = require('./models/OfferStage')(sequelize);
+const GeneralConversation = require('./models/GeneralConversation')(sequelize);
+const GeneralConversationMessage = require('./models/GeneralConversationMessage')(sequelize);
 
 Employee.hasMany(Project, { foreignKey: 'project_manager_id', as: 'managed_projects' });
 Project.belongsTo(Employee, { foreignKey: 'project_manager_id', as: 'project_manager' });
@@ -214,6 +216,11 @@ OfferRequest.belongsTo(Employee, { foreignKey: 'created_by', as: 'creator' });
 OfferRequest.belongsTo(Employee, { foreignKey: 'accepted_by', as: 'supervisor' });
 OfferRequest.belongsTo(Offer, { foreignKey: 'offer_id', as: 'offer' });
 
+GeneralConversation.belongsTo(Employee, { foreignKey: 'created_by', as: 'creator' });
+
+GeneralConversationMessage.belongsTo(Employee, { foreignKey: 'employee_id', as: 'emisor' });
+GeneralConversationMessage.belongsTo(GeneralConversation, {foreignKey: 'general_conversation_id'});
+
 module.exports = {
     sequelize,
     Client,
@@ -261,5 +268,7 @@ module.exports = {
     Offer,
     OfferRequest,
     OfferLossReason,
-    OfferStage
+    OfferStage,
+    GeneralConversation,
+    GeneralConversationMessage
 };
