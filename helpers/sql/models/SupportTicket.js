@@ -14,6 +14,10 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: true
         },
+        migration_date: {
+            type: DataTypes.DATE,
+            allowNull: true
+        },
         original_support_area: {
             type: DataTypes.INTEGER,
             allowNull: true
@@ -38,12 +42,20 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: true
         },
+        acceptance_date: {
+            type: DataTypes.DATE,
+            allowNull: true
+        },
         rejected: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
         },
         rejected_by: {
             type: DataTypes.INTEGER,
+            allowNull: true
+        },
+        rejection_date: {
+            type: DataTypes.DATE,
             allowNull: true
         },
         deleted: {
@@ -58,12 +70,20 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: true
         },
+        started_date: {
+            type: DataTypes.DATE,
+            allowNull: true
+        },
         finished: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
         },
         finished_by: {
             type: DataTypes.INTEGER,
+            allowNull: true
+        },
+        finished_date: {
+            type: DataTypes.DATE,
             allowNull: true
         },
         issue: {
@@ -82,7 +102,16 @@ module.exports = (sequelize) => {
         },
         audio_file: {
             type: DataTypes.TEXT
-        }
+        },
+        information: {
+            type: DataTypes.TEXT
+        },
+        rejection_reason: {
+            type: DataTypes.TEXT
+        },
+        information_audio_file: {
+            type: DataTypes.TEXT
+        },
   }, {
     sequelize,
     modelName: 'SuportTicket',

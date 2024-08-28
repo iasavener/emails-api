@@ -223,6 +223,9 @@ GeneralConversation.belongsTo(Employee, { foreignKey: 'created_by', as: 'creator
 GeneralConversationMessage.belongsTo(Employee, { foreignKey: 'employee_id', as: 'emisor' });
 GeneralConversationMessage.belongsTo(GeneralConversation, {foreignKey: 'general_conversation_id'});
 
+SupportTicket.belongsTo(Employee, { foreignKey: 'created_by', as: 'creator' });
+SupportTicket.belongsTo(SupportArea, { foreignKey: 'support_area', as: 'area' });
+
 module.exports = {
     sequelize,
     Client,
