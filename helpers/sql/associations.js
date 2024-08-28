@@ -45,6 +45,8 @@ const OfferLossReason = require('./models/OfferLossReason')(sequelize);
 const OfferStage = require('./models/OfferStage')(sequelize);
 const GeneralConversation = require('./models/GeneralConversation')(sequelize);
 const GeneralConversationMessage = require('./models/GeneralConversationMessage')(sequelize);
+const SupportTicket = require('./models/SupportTicket')(sequelize);
+const SupportArea = require('./models/SupportArea')(sequelize);
 
 Employee.hasMany(Project, { foreignKey: 'project_manager_id', as: 'managed_projects' });
 Project.belongsTo(Employee, { foreignKey: 'project_manager_id', as: 'project_manager' });
@@ -270,5 +272,7 @@ module.exports = {
     OfferLossReason,
     OfferStage,
     GeneralConversation,
-    GeneralConversationMessage
+    GeneralConversationMessage,
+    SupportTicket,
+    SupportArea
 };

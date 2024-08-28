@@ -84,6 +84,9 @@ module.exports = (sequelize) => {
     project_notification: {
       type: DataTypes.BOOLEAN
     },
+    stage_notification: {
+      type: DataTypes.BOOLEAN
+    },
     work_packages_notification: {
       type: DataTypes.BOOLEAN
     },
