@@ -96,12 +96,8 @@ module.exports = (sequelize) => {
         resume: {
             type: DataTypes.TEXT
         },
-        audio: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false
-        },
         audio_file: {
-            type: DataTypes.TEXT
+            type: DataTypes.STRING
         },
         information: {
             type: DataTypes.TEXT
@@ -110,8 +106,11 @@ module.exports = (sequelize) => {
             type: DataTypes.TEXT
         },
         information_audio_file: {
-            type: DataTypes.TEXT
+            type: DataTypes.STRING
         },
+        rejection_audio_file: {
+            type: DataTypes.STRING
+        }
   }, {
     sequelize,
     modelName: 'SuportTicket',
