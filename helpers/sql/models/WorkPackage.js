@@ -20,7 +20,7 @@ module.exports = (sequelize) => {
     },
     updated_by: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true
     },
     deleted: {
       type: DataTypes.BOOLEAN,
