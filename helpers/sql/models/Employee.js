@@ -29,6 +29,13 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false
     },
+    email_signature: {
+      type: DataTypes.TEXT,
+    },
+    email_synchronization: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
     password: {
       type: DataTypes.STRING,
       allowNull: false
