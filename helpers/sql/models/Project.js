@@ -131,6 +131,9 @@ module.exports = (sequelize) => {
     },
     days_0_notification: {
       type: DataTypes.BOOLEAN,
+    },
+    reason: {
+      type: DataTypes.STRING
     }
   }, {
     sequelize,
