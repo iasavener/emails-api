@@ -76,10 +76,6 @@ const EmailsService = {
 
     if (category === "documentation") {
       subject = data.subject;
-    } else if (category === "employee_assigned_to_project") {
-      subject = "Empleado asignado a proeycto";
-    } else if (category === "workpackage_assigned_to_project") {
-      subject = `Work Package ${metadata.workppackage} asignado al proyecto ${metadata.project}`;
     } else if (category === "support") {
       if (metadata.id === 1) {
         subject = "Nuevo ticket de soporte recibido para General";
@@ -128,6 +124,37 @@ const EmailsService = {
     } else if (category === 'support_finish') {
         subject = "Ticket finalizado";
         contentHTML = `Su ticket ha sido finalizado. ${metadata.information}`;
+    } else if (category === 'pm_assigned_to_project') {
+        subject = "PM asignado al proyecto";
+        contentHTML = `Se le ha asignado al proyecto ${metadata.project_name}`;
+    } else  if (category === 'old_pm_assigned_to_project') {
+        subject = "PM quitado del proyecto";
+        contentHTML = `Se le ha quitado del proyecto ${metadata.project_name}`;
+    } else if (category === 'employee_assigned_to_project') {
+        subject = "Asignación a proyecto";
+        contentHTML = `Se le ha asignado al proyecto ${metadata.project_name}`;
+    } else if(category === 'employee_assigned_to_project_dt_dgp') {
+        subject = "Empleado asignado a proyecto";
+        contentHTML = `${metadata.project_manager.name} ${metadata.project_manager.last_name} ha añadido a ${metadata.employee.name} ${metadata.employee.last_name} al proyecto ${metadata.project_name}`;
+        } else if (category === 'employee_stand_by_to_project') {
+        subject = "Empleado suspendido del proyecto";
+        contentHTML = `Se le ha suspendido del proyecto ${metadata.project_name}`;
+    } else if (category === 'employee_deleted_to_project') {
+        subject = "Empleado eliminado del proyecto";
+        contentHTML = `Se le ha eliminado del proyecto ${metadata.project_name}`;
+    } else if (category === 'time_allocation_request_to_project') {
+        subject = "Solicitudes de horas";
+        contentHTML = `Tienes solicitudes de horas para gestionar el proyecto ${metadata.project_name}`;
+    } else if (category === 'time_allocation_request_accepted') {
+        subject = "Solicitudes de horas aceptadas";
+        contentHTML = `Se han aceptado la/s solicitudes de horas del proyecto ${metadata.project_name}`;
+    } else if (category === 'time_allocation_request_rejected') {
+        subject = "Solicitudes de horas rechazadas";
+        contentHTML = `Se han rechazado la/s solicitudes de horas del proyecto ${metadata.project_name}. ${metadata.rejection_reason}`;
+    } else if (category === 'update_status') {
+        subject = `Se ha cambiado el estado del ${metadata.name}`;
+        contentHTML = `Se ha cambiado el estado del ${metadata.name} a ${metadata.status}`;
+        console.log(contentHTML)
     }
 
     for (const recipient of to) {
