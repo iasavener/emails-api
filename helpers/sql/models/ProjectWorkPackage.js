@@ -47,10 +47,6 @@ module.exports = (sequelize) => {
     },
     in_progress: {
       type: DataTypes.BOOLEAN,
-      defaultValue: false
-    },
-    proposed: {
-      type: DataTypes.BOOLEAN,
       defaultValue: true
     },
     completed: {
