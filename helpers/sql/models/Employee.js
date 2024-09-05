@@ -102,6 +102,23 @@ module.exports = (sequelize) => {
     updated_by: {
       type: DataTypes.INTEGER,
       allowNull: true
+    },
+    active: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
+    },
+    short_term_low: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    long_term_low: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    it: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
     }
   }, {
     sequelize,

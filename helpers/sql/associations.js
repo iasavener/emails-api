@@ -4,7 +4,6 @@ const Deliverable = require('./models/Deliverable')(sequelize);
 const Department = require('./models/Department')(sequelize);
 const DepartmentArea = require('./models/DepartmentArea')(sequelize);
 const Employee = require('./models/Employee')(sequelize);
-const EmployeeStatus = require('./models/EmployeeStatus')(sequelize);
 const GeneralArea = require('./models/GeneralArea')(sequelize);
 const PlatformPermission = require('./models/PlatformPermission')(sequelize);
 const PlatformPermissionAllowed = require('./models/PlatformPermissionAllowed')(sequelize);
@@ -105,12 +104,6 @@ Employee.belongsTo(Employee, { foreignKey: 'created_by', as: 'creator' });
 Employee.belongsTo(Employee, { foreignKey: 'updated_by', as: 'editor' });
 Employee.hasMany(TimeRecord, { foreignKey: 'employee_id', as: 'time_records' });
 TimeRecord.belongsTo(Employee, { foreignKey: 'employee_id', as: 'employee' });
-
-Employee.belongsTo(EmployeeStatus, { foreignKey: 'status_id', as: 'status' });
-EmployeeStatus.hasMany(Employee, { foreignKey: 'status_id' });
-EmployeeStatus.belongsTo(Employee, { foreignKey: 'created_by', as: 'creator' });
-EmployeeStatus.belongsTo(Employee, { foreignKey: 'updated_by', as: 'editor' });
-
 
 Project.belongsToMany(Employee, { through: ProjectEmployee, foreignKey: 'project_id', otherKey: 'employee_id', as: 'employees' });
 Employee.belongsToMany(Project, { through: ProjectEmployee, foreignKey: 'employee_id', otherKey: 'project_id', as: 'projects' });
@@ -233,7 +226,6 @@ module.exports = {
     Department,
     DepartmentArea,
     Employee,
-    EmployeeStatus,
     GeneralArea,
     PlatformPermission,
     PlatformSection,
