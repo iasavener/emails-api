@@ -103,6 +103,7 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       allowNull: true
     },
+<<<<<<< HEAD
     active: {
       type: DataTypes.BOOLEAN,
       defaultValue: true
@@ -115,6 +116,8 @@ module.exports = (sequelize) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     },
+=======
+>>>>>>> 1eb65cca77828697a8f18706d0d30ca5ce45532d
     it: {
       type: DataTypes.BOOLEAN,
       allowNull: false,

@@ -37,13 +37,10 @@ const EmailsService = {
   notify: async (data, file) => {
     
     const to = JSON.parse(data.to);
-    console.log(to)
 
     const category = data.category;
-    console.log(category)
 
     const metadata = data.metadata ?JSON.parse(data.metadata) : null;
-    console.log(metadata)
     let subject = null;
  
 
@@ -154,7 +151,15 @@ const EmailsService = {
     } else if (category === 'update_status') {
         subject = `Se ha cambiado el estado del ${metadata.name}`;
         contentHTML = `Se ha cambiado el estado del ${metadata.name} a ${metadata.status}`;
-        console.log(contentHTML)
+    } else if (category === 'saverteca_request_first_step' || category === 'saverteca_request_second_step') {
+      subject = `${metadata.employee} ha solitidao acceso a la Saverteca`;
+      contentHTML = `<p>${metadata.employee} ha solicitado acceso al proyecto ${metadata.project} de la Saverteca.</p><p>Motivo: ${metadata.reason}</p>`;
+    } else if (category === 'saverteca_request_completed') {
+      subject = `Solicitud de acceso a Saverteca aprobada`;
+      contentHTML = `<p>Se ha aprobado tu solicitado de acceso al proyecto ${metadata.project} de la Saverteca.</p>`;
+    } else if (category === 'saverteca_request_rejected') {
+      subject = `Solicitud de acceso a Saverteca rechazada`;
+      contentHTML = `<p>Se ha rechazado tu solicitado de acceso al proyecto ${metadata.project} de la Saverteca.</p><p>Motivo: ${metadata.rejection_reason || '-'}`;
     }
 
     for (const recipient of to) {
@@ -164,13 +169,13 @@ const EmailsService = {
             email = employee.dataValues.email;
         } 
 
-        // await transporter.sendMail({
-        //     from: notificationsSettings.email,
-        //     to: email,
-        //     subject: subject || 'Prueba',
-        //     html: `${contentHTML}<br><br>${notificationsSettings.signature}`,
-        //     attachments: attachments
-        // });
+        await transporter.sendMail({
+          from: notificationsSettings.email,
+          to: email,
+          subject: subject || 'Prueba',
+          html: `${contentHTML}<br><br>${notificationsSettings.signature}`,
+          attachments: attachments
+        });
         console.log(`Mensaje enviado correctamente a ${email}`);
 
     }
