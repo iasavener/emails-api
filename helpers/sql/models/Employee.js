@@ -102,6 +102,11 @@ module.exports = (sequelize) => {
     updated_by: {
       type: DataTypes.INTEGER,
       allowNull: true
+    },
+    it: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
     }
   }, {
     sequelize,
