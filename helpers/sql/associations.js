@@ -46,6 +46,12 @@ const GeneralConversation = require('./models/GeneralConversation')(sequelize);
 const GeneralConversationMessage = require('./models/GeneralConversationMessage')(sequelize);
 const SupportTicket = require('./models/SupportTicket')(sequelize);
 const SupportArea = require('./models/SupportArea')(sequelize);
+const WorkTool = require('./models/WorkTool')(sequelize);
+const TypeExpenseNote = require('./models/TypeExpenseNote')(sequelize);
+const TypeVacation = require('./models/TypeVacation')(sequelize);
+const TypePaidLeave = require('./models/TypePaidLeave')(sequelize);
+const SavertecaRequest = require('./models/SavertecaRequest')(sequelize);
+
 
 Employee.hasMany(Project, { foreignKey: 'project_manager_id', as: 'managed_projects' });
 Project.belongsTo(Employee, { foreignKey: 'project_manager_id', as: 'project_manager' });
@@ -219,6 +225,21 @@ GeneralConversationMessage.belongsTo(GeneralConversation, {foreignKey: 'general_
 SupportTicket.belongsTo(Employee, { foreignKey: 'created_by', as: 'creator' });
 SupportTicket.belongsTo(SupportArea, { foreignKey: 'support_area', as: 'area' });
 
+WorkTool.belongsTo(Employee, { foreignKey: 'created_by', as: 'creator' });
+WorkTool.belongsTo(Employee, { foreignKey: 'updated_by', as: 'editor' });
+
+TypeExpenseNote.belongsTo(Employee, { foreignKey: 'created_by', as: 'creator' });
+TypeExpenseNote.belongsTo(Employee, { foreignKey: 'updated_by', as: 'editor' });
+
+TypeVacation.belongsTo(Employee, { foreignKey: 'created_by', as: 'creator' });
+TypeVacation.belongsTo(Employee, { foreignKey: 'updated_by', as: 'editor' });
+
+TypePaidLeave.belongsTo(Employee, { foreignKey: 'created_by', as: 'creator' });
+TypePaidLeave.belongsTo(Employee, { foreignKey: 'updated_by', as: 'editor' });
+
+SavertecaRequest.belongsTo(Employee, { foreignKey: 'employee_id', as: 'creator' });
+
+
 module.exports = {
     sequelize,
     Client,
@@ -269,5 +290,11 @@ module.exports = {
     GeneralConversation,
     GeneralConversationMessage,
     SupportTicket,
-    SupportArea
+    SupportArea,
+    WorkTool,
+    TypeExpenseNote,
+    TypeVacation,
+    TypePaidLeave,
+    SavertecaRequest
+
 };
