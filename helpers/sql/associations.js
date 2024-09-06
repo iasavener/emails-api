@@ -51,6 +51,8 @@ const TypeExpenseNote = require('./models/TypeExpenseNote')(sequelize);
 const TypeVacation = require('./models/TypeVacation')(sequelize);
 const TypePaidLeave = require('./models/TypePaidLeave')(sequelize);
 const SavertecaRequest = require('./models/SavertecaRequest')(sequelize);
+const PurchaseType = require('./models/PurchaseType')(sequelize);
+const SoftwareInstallationRequest = require('./models/SoftwareInstallationRequest')(sequelize);
 
 
 Employee.hasMany(Project, { foreignKey: 'project_manager_id', as: 'managed_projects' });
@@ -239,6 +241,12 @@ TypePaidLeave.belongsTo(Employee, { foreignKey: 'updated_by', as: 'editor' });
 
 SavertecaRequest.belongsTo(Employee, { foreignKey: 'employee_id', as: 'creator' });
 
+PurchaseType.belongsTo(Employee, { foreignKey: 'employee_id', as: 'creator' });
+PurchaseType.belongsTo(Employee, { foreignKey: 'updated_by', as: 'editor' });
+
+SoftwareInstallationRequest.belongsTo(Employee, { foreignKey: 'employee_id', as: 'creator' });
+SoftwareInstallationRequest.belongsTo(Department, { foreignKey: 'department_id', as: 'department' });
+
 
 module.exports = {
     sequelize,
@@ -295,6 +303,9 @@ module.exports = {
     TypeExpenseNote,
     TypeVacation,
     TypePaidLeave,
-    SavertecaRequest
+    SavertecaRequest,
+    PurchaseType,
+    SoftwareInstallationRequest,
+
 
 };

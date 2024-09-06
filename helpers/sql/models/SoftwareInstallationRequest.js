@@ -1,9 +1,9 @@
 const { DataTypes, Model } = require('sequelize');
 
-class SoftwareRequest extends Model {}
+class SoftwareInstallationRequest extends Model {}
 
 module.exports = (sequelize) => {
-    SoftwareRequest.init({
+    SoftwareInstallationRequest.init({
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -14,16 +14,17 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: true
         },
+        department_id: {
+            type: DataTypes.TEXT,
+            allowNull: false
+        },
         software: {
             type: DataTypes.TEXT
         },
         version: {
             type: DataTypes.TEXT
         },
-        work_station: {
-            type: DataTypes.TEXT
-        },
-        server_location: {
+        workstation: {
             type: DataTypes.TEXT
         },
         reason: {
@@ -73,12 +74,22 @@ module.exports = (sequelize) => {
         },
         rejection_reason: {
             type: DataTypes.TEXT
+        },
+        deleted: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
+        },
+        audio_file: {
+            type: DataTypes.STRING
+        },
+        rejection_audio_file: {
+            type: DataTypes.STRING
         }
   }, {
     sequelize,
-    modelName: 'SoftwareRequest',
-    tableName: 'software_requests'
+    modelName: 'SoftwareInstallationRequest',
+    tableName: 'software_installation_requests'
   });
 
-  return SoftwareRequest;
+  return SoftwareInstallationRequest;
 };
