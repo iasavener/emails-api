@@ -169,6 +169,15 @@ const EmailsService = {
     } else if (category === 'software_installation_request_rejected') {
       subject = `Solicitud de instalación de software rechada`;
       contentHTML = `<p>Se ha rechazado la instalación de la versión ${metadata.version} de ${metadata.software} en el equipo ${metadata.workstation} solicitada.</p><p>Motivo: ${metadata.rejection_reason || '-'}</p>`;
+    } else if (category === 'work_tool_request_rejected') {
+      subject = `Solicitud de equipo de trabajo rechazada`;
+      contentHTML = `<p>Se ha rechazado tu solicitado del equipo de trabajo ${metadata.work_tool} para el project ${metadata.project} para la fecha ${metadata.date}.</p><p>Motivo: ${metadata.rejection_reason || '-'}</p>`;
+    } else if (category === 'work_tool_request_received') {
+      subject = `${metadata.employee} ha solitidao un equipo de trabajo`;
+      contentHTML = `<p>${metadata.employee} ha solicitado el equipo de trabajo ${metadata.work_tool} (${metadata.quantity}) para el proyecto ${metadata.project} para ${metadata.location} para la fecha ${metadata.date}.</p><p>Motivo: ${metadata.reason}</p>`;
+    } else if (category === 'work_tool_request_completed') {
+      subject = `Solicitud de equipo de trabajo aprobada`;
+      contentHTML = `<p>Se ha aprobado la solicitud del equipo de trabajo ${metadata.work_tool} para el proyecto ${metadata.project} para la fecha ${metadata.date} solicitada.</p>`;
     } 
 
     for (const recipient of to) {
