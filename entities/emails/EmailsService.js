@@ -151,7 +151,7 @@ const EmailsService = {
     } else if (category === 'update_status') {
         subject = `Se ha cambiado el estado del ${metadata.name}`;
         contentHTML = `Se ha cambiado el estado del ${metadata.name} a ${metadata.status}`;
-    } else if (category === 'saverteca_request_first_step' || category === 'saverteca_request_second_step') {
+    } else if (category === 'saverteca_request_received') {
       subject = `${metadata.employee} ha solitidao acceso a la Saverteca`;
       contentHTML = `<p>${metadata.employee} ha solicitado acceso al proyecto ${metadata.project} de la Saverteca.</p><p>Motivo: ${metadata.reason}</p>`;
     } else if (category === 'saverteca_request_completed') {
@@ -159,8 +159,17 @@ const EmailsService = {
       contentHTML = `<p>Se ha aprobado tu solicitado de acceso al proyecto ${metadata.project} de la Saverteca.</p>`;
     } else if (category === 'saverteca_request_rejected') {
       subject = `Solicitud de acceso a Saverteca rechazada`;
-      contentHTML = `<p>Se ha rechazado tu solicitado de acceso al proyecto ${metadata.project} de la Saverteca.</p><p>Motivo: ${metadata.rejection_reason || '-'}`;
-    }
+      contentHTML = `<p>Se ha rechazado tu solicitado de acceso al proyecto ${metadata.project} de la Saverteca.</p><p>Motivo: ${metadata.rejection_reason || '-'}</p>`;
+    } else if (category === 'software_installation_request_received') {
+      subject = `${metadata.employee} ha solitidao la instalación de software`;
+      contentHTML = `<p>${metadata.employee} ha solicitado la instalación de la versión ${metadata.software} de ${metadata.software} en el equipo de trabajo ${metadata.workstation}.</p><p>Motivo: ${metadata.reason}</p>`;
+    } else if (category === 'software_installation_request_completed') {
+      subject = `Solicitud de instalación de software aprobada`;
+      contentHTML = `<p>Se ha aprobado la instalación de la versión ${metadata.version} de ${metadata.software} en el equipo ${metadata.workstation} solicitada.</p>`;
+    } else if (category === 'software_installation_request_rejected') {
+      subject = `Solicitud de instalación de software rechada`;
+      contentHTML = `<p>Se ha rechazado la instalación de la versión ${metadata.version} de ${metadata.software} en el equipo ${metadata.workstation} solicitada.</p><p>Motivo: ${metadata.rejection_reason || '-'}</p>`;
+    } 
 
     for (const recipient of to) {
         let email = recipient;
