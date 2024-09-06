@@ -178,13 +178,13 @@ const EmailsService = {
             email = employee.dataValues.email;
         } 
 
-        await transporter.sendMail({
-          from: notificationsSettings.email,
-          to: email,
-          subject: subject || 'Prueba',
-          html: `${contentHTML}<br><br>${notificationsSettings.signature}`,
-          attachments: attachments
-        });
+        // await transporter.sendMail({
+        //   from: notificationsSettings.email,
+        //   to: email,
+        //   subject: subject || 'Prueba',
+        //   html: `${contentHTML}<br><br>${notificationsSettings.signature}`,
+        //   attachments: attachments
+        // });
         console.log(`Mensaje enviado correctamente a ${email}`);
 
     }

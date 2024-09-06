@@ -241,7 +241,7 @@ TypePaidLeave.belongsTo(Employee, { foreignKey: 'updated_by', as: 'editor' });
 
 SavertecaRequest.belongsTo(Employee, { foreignKey: 'employee_id', as: 'creator' });
 
-PurchaseType.belongsTo(Employee, { foreignKey: 'employee_id', as: 'creator' });
+PurchaseType.belongsTo(Employee, { foreignKey: 'created_by', as: 'creator' });
 PurchaseType.belongsTo(Employee, { foreignKey: 'updated_by', as: 'editor' });
 
 SoftwareInstallationRequest.belongsTo(Employee, { foreignKey: 'employee_id', as: 'creator' });
