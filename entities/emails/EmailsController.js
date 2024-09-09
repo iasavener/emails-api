@@ -7,6 +7,14 @@ const EmailsController = {
     return ResponseHelper.getResponse(res, EmailsService.getEmails, [res.locals.employee, req.query]);
   },
 
+  getEmailConfiguration: async (req, res) => {
+    return ResponseHelper.getResponse(res, EmailsService.getEmailConfiguration, [res.locals.employee]);
+  },
+
+  updateEmailConfiguration: async (req, res) => {
+    return ResponseHelper.getResponse(res, EmailsService.updateEmailConfiguration, [res.locals.employee, req.body]);
+  },
+
   discardEmail: async (req, res) => {
     return ResponseHelper.getResponse(res, EmailsService.discardEmail, [res.locals.employee, req.params.uid]);
   },

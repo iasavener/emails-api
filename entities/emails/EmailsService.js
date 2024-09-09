@@ -201,6 +201,22 @@ const EmailsService = {
 
     return {};
   },
+
+  getEmailConfiguration: async (employeeId) => {
+    const employee = await Employee.findOne({
+        attributes: ['id', 'name', 'last_name', 'email_configuration'],
+        
+    });
+    return {email_configuration: employee.email_configuration};
+  },
+
+  
+  updateEmailConfiguration: async (employee, data) => {
+    await Employee.update(
+      {updated_by: employee.id, email_configuration: data.email_configuration},
+      {where: {id: employee.id}});
+    return {};
+  },
 };
 
 module.exports = EmailsService;

@@ -25,6 +25,14 @@ router.get('/', AuthMiddleware.checkToken, async (req, res)=> {
     await EmailsController.getEmails(req, res);
 });
 
+router.get('/configuration', AuthMiddleware.checkToken, async (req, res)=> {
+    await EmailsController.getEmailConfiguration(req, res);
+});
+
+router.patch('/configuration', AuthMiddleware.checkToken, async (req, res)=> {
+    await EmailsController.updateEmailConfiguration(req, res);
+});
+
 router.post('/:uid/discard', AuthMiddleware.checkToken, async (req, res)=> {
     await EmailsController.discardEmail(req, res);
 });
