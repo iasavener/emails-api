@@ -85,6 +85,16 @@ module.exports = (sequelize) => {
       allowNull: false,
       defaultValue: false
     },
+    it: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
+    gs: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
     gpd: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
@@ -113,11 +123,6 @@ module.exports = (sequelize) => {
     },
     long_term_low: {
       type: DataTypes.BOOLEAN,
-      defaultValue: false
-    },
-    it: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
       defaultValue: false
     },
     email_configuration: {
