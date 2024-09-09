@@ -9,7 +9,8 @@ const EmailsService = {
     const emails = await MongoService.getEmails(
       employee.id,
       query.page,
-      query.page_size
+      query.page_size,
+      query.project_id
     );
 
     return emails;
