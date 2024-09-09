@@ -10,6 +10,7 @@ const EmployeeSchema = new mongoose.Schema(
     employee_id: Number,
     password: String,
     signature: String,
+    email_synchronization: Boolean
   },
   {
     strict: false,
