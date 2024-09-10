@@ -92,10 +92,10 @@ const MongoService = {
       }
     },
     
-    getEmails: async (employee_id, page = 1, limit = 10) => {
+    getEmails: async (employee_id, page = 1, limit = 10, project_id= null) => {
       const skip = (page - 1) * limit;
 
-      const totalItems = await Email.countDocuments({
+      const filter = {
           employee_id,
           $or: [
             { saved: { $exists: false }, discarded: { $exists: false } },
@@ -103,26 +103,35 @@ const MongoService = {
             { saved: false, discarded: { $exists: false } },
             { saved: false, discarded: false }
         ]
-      });
+      };
 
-      const emails = await Email.find({
-        employee_id,
-        $or: [
-            { saved: { $exists: false }, discarded: { $exists: false } },
-            { saved: { $exists: false }, discarded: false },
-            { saved: false, discarded: { $exists: false } },
-            { saved: false, discarded: false }
-        ]
-      })
+      if (project_id) {
+        filter.project_id = project_id;
+      };
+      const totalItems = await Email.countDocuments(filter);
+
+      const emails = await Email.find(filter)
           .skip(skip)
           .limit(limit);
-
+          
       const decryptedEmails = emails.map((email) => decryptFields(email.toObject(), ["from", "subject", "body"]));
 
       return {
           total_items: totalItems,
           items: decryptedEmails
       };
+    },
+
+    getEmail: async(uid, project_id) => {
+      const filter = {
+        uid : uid.toString(),
+        project_id,
+      };
+      const email = await Email.findOne(filter);
+      if(email) {
+        return decryptFields(email.toObject(), ["from", "subject", "body"]);
+      }
+      return null;
     },
 
     discardEmail: async (employee_id, uid) => {
