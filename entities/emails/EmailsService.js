@@ -260,7 +260,7 @@ const EmailsService = {
         updated_by: employee.id,
         email_configuration: data.email_configuration,
       },
-      { where: { id: employee.id } }
+      { where: { id: data.employee } }
     );
     return {};
   },
