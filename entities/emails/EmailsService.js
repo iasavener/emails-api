@@ -187,7 +187,7 @@ const EmailsService = {
       subject = `Se ha cambiado el estado del ${metadata.name}`;
       contentHTML = `Se ha cambiado el estado del ${metadata.name} a ${metadata.status}`;
     } else if (category === "saverteca_request_received") {
-      subject = `${metadata.employee} ha solitidao acceso a la Saverteca`;
+      subject = `${metadata.employee} ha solicitado acceso a la Saverteca`;
       contentHTML = `<p>${metadata.employee} ha solicitado acceso al proyecto ${metadata.project} de la Saverteca.</p><p>Motivo: ${metadata.reason}</p>`;
     } else if (category === "saverteca_request_completed") {
       subject = `Solicitud de acceso a Saverteca aprobada`;
@@ -198,7 +198,7 @@ const EmailsService = {
         metadata.project
       } de la Saverteca.</p><p>Motivo: ${metadata.rejection_reason || "-"}</p>`;
     } else if (category === "software_installation_request_received") {
-      subject = `${metadata.employee} ha solitidao la instalación de software`;
+      subject = `${metadata.employee} ha solicitado la instalación de software`;
       contentHTML = `<p>${metadata.employee} ha solicitado la instalación de la versión ${metadata.software} de ${metadata.software} en el equipo de trabajo ${metadata.workstation}.</p><p>Motivo: ${metadata.reason}</p>`;
     } else if (category === "software_installation_request_completed") {
       subject = `Solicitud de instalación de software aprobada`;
@@ -212,17 +212,16 @@ const EmailsService = {
       } solicitada.</p><p>Motivo: ${metadata.rejection_reason || "-"}</p>`;
     } else if (category === "work_tool_request_rejected") {
       subject = `Solicitud de equipo de trabajo rechazada`;
-      contentHTML = `<p>Se ha rechazado tu solicitado del equipo de trabajo ${
-        metadata.work_tool
-      } para el project ${metadata.project} para la fecha ${
-        metadata.date
-      }.</p><p>Motivo: ${metadata.rejection_reason || "-"}</p>`;
+      contentHTML = `<p>Se ha rechazado tu solicitado del equipo de trabajo ${metadata.work_tool} (${metadata.quantity}) para el project ${metadata.project} en ${metadata.location} para la fecha ${metadata.date}.</p><p>Motivo: ${metadata.rejection_reason || "-"}</p>`;
     } else if (category === "work_tool_request_received") {
-      subject = `${metadata.employee} ha solitidao un equipo de trabajo`;
-      contentHTML = `<p>${metadata.employee} ha solicitado el equipo de trabajo ${metadata.work_tool} (${metadata.quantity}) para el proyecto ${metadata.project} para ${metadata.location} para la fecha ${metadata.date}.</p><p>Motivo: ${metadata.reason}</p>`;
-    } else if (category === "work_tool_request_completed") {
+      subject = `${metadata.employee} ha solicitado un equipo de trabajo`;
+      contentHTML = `<p>${metadata.employee} ha solicitado el equipo de trabajo ${metadata.work_tool} (${metadata.quantity}) para el proyecto ${metadata.project} en ${metadata.location} para la fecha ${metadata.date}.</p><p>Motivo: ${metadata.reason}</p>`;
+    } else if (category === "work_tool_request_accepted") {
       subject = `Solicitud de equipo de trabajo aprobada`;
-      contentHTML = `<p>Se ha aprobado la solicitud del equipo de trabajo ${metadata.work_tool} para el proyecto ${metadata.project} para la fecha ${metadata.date} solicitada.</p>`;
+      contentHTML = `<p>Se ha aprobado la solicitud del equipo de trabajo ${metadata.work_tool} (${metadata.quantity}) para el proyecto ${metadata.project} para la fecha ${metadata.date} en ${metadata.location} solicitada.</p>`;
+    } else if (category === "work_tool_return_request_confirmed") {
+      subject = `Devolución de equipo de trabajo confirmada`;
+      contentHTML = `<p>Se ha confirmado la devolución del equipo de trabajo ${metadata.work_tool} (${metadata.quantity}) para el proyecto ${metadata.project} para la fecha ${metadata.date} en ${metadata.location}.</p><p>Anotaciones: ${metadata.annotations || "-"}`;
     }
 
     for (const recipient of to) {
@@ -235,13 +234,13 @@ const EmailsService = {
         email = employee.dataValues.email;
       }
 
-      // await transporter.sendMail({
-      //   from: notificationsSettings.email,
-      //   to: email,
-      //   subject: subject || 'Prueba',
-      //   html: `${contentHTML}<br><br>${notificationsSettings.signature}`,
-      //   attachments: attachments
-      // });
+      await transporter.sendMail({
+        from: notificationsSettings.email,
+        to: email,
+        subject: subject || 'Prueba',
+        html: `${contentHTML}<br><br>${notificationsSettings.signature}`,
+        attachments: attachments
+      });
       console.log(`Mensaje enviado correctamente a ${email}`);
     }
 
