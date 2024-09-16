@@ -5,6 +5,7 @@ const Department = require('./models/Department')(sequelize);
 const DepartmentArea = require('./models/DepartmentArea')(sequelize);
 const Employee = require('./models/Employee')(sequelize);
 const GeneralArea = require('./models/GeneralArea')(sequelize);
+const GeneralSubArea = require('./models/GeneralSubArea')(sequelize);
 const PlatformPermission = require('./models/PlatformPermission')(sequelize);
 const PlatformPermissionAllowed = require('./models/PlatformPermissionAllowed')(sequelize);
 const PlatformSection = require('./models/PlatformSection')(sequelize);
@@ -77,11 +78,20 @@ PlatformPermission.belongsTo(PlatformSection, { foreignKey: 'platform_section_id
 GeneralArea.belongsTo(Employee, { foreignKey: 'director_id', as: 'director' });
 Employee.hasMany(GeneralArea, { foreignKey: 'director_id', as: 'directed_general_areas' });
 
+GeneralSubArea.belongsTo(Employee, { foreignKey: 'director_id', as: 'director' });
+Employee.hasMany(GeneralSubArea, { foreignKey: 'director_id', as: 'directed_general_sub_areas' });
+
 DepartmentArea.belongsTo(Employee, { foreignKey: 'director_id', as: 'director' });
 Employee.hasMany(DepartmentArea, { foreignKey: 'director_id', as: 'directed_department_areas' });
 
 GeneralArea.hasMany(Department, { foreignKey: 'general_area_id', as: 'departments' });
 Department.belongsTo(GeneralArea, { foreignKey: 'general_area_id', as: 'general_area' });
+
+GeneralArea.hasMany(GeneralSubArea, { foreignKey: 'general_area_id', as: 'general_sub_areas' });
+GeneralSubArea.belongsTo(GeneralArea, { foreignKey: 'general_area_id', as: 'general_area' });
+
+GeneralSubArea.hasMany(Department, { foreignKey: 'general_sub_area_id', as: 'departments' });
+Department.belongsTo(GeneralSubArea, { foreignKey: 'general_sub_area_id', as: 'general_sub_area' });
 
 Department.hasMany(DepartmentArea, { foreignKey: 'department_id', as: 'department_areas' });
 DepartmentArea.belongsTo(Department, { foreignKey: 'department_id', as: 'department' });
@@ -263,6 +273,7 @@ module.exports = {
     DepartmentArea,
     Employee,
     GeneralArea,
+    GeneralSubArea,
     PlatformPermission,
     PlatformSection,
     PlatformSectionAllowed,

@@ -18,8 +18,12 @@ module.exports = (sequelize) => {
       allowNull: true
     },
     general_area_id: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       allowNull: false
+    },
+    general_sub_area_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     },
     created_by: {
       type: DataTypes.INTEGER,

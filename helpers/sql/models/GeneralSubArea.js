@@ -1,9 +1,9 @@
 const { DataTypes, Model } = require('sequelize');
 
-class GeneralArea extends Model {}
+class GeneralSubArea extends Model {}
 
 module.exports = (sequelize) => {
-  GeneralArea.init({
+    GeneralSubArea.init({
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -15,31 +15,27 @@ module.exports = (sequelize) => {
       allowNull: false,
       unique: true
     },
+    general_area_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
     director_id: {
       type: DataTypes.INTEGER,
       allowNull: true
     },
-    operations: {
+    general_project_management: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     },
-    operations_support: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    },
-    transversal_services: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    },
-    business_development: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    }
+    technical_direction: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+      }
   }, {
     sequelize,
-    modelName: 'GeneralArea',
-    tableName: 'general_areas'
+    modelName: 'GeneralSubArea',
+    tableName: 'general_sub_areas'
   });
 
-  return GeneralArea;
+  return GeneralSubArea;
 };
