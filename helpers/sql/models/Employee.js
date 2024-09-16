@@ -76,6 +76,10 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: true
     },
+    department_area_id: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     role_id: {
       type: DataTypes.INTEGER,
       allowNull: false
@@ -101,6 +105,31 @@ module.exports = (sequelize) => {
       defaultValue: false
     },
     ceo: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
+    admon: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
+    od: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
+    manager_rrhh: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
+    admin_rrhh: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
+    financial: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false
