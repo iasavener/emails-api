@@ -56,6 +56,7 @@ const PurchaseType = require('./models/PurchaseType')(sequelize);
 const SoftwareInstallationRequest = require('./models/SoftwareInstallationRequest')(sequelize);
 const WorkToolRequest = require('./models/WorkToolRequest')(sequelize);
 const WorkToolReturnRequest = require('./models/WorkToolReturnRequest')(sequelize);
+const CvRequest = require('./models/CvRequest')(sequelize);
 
 Employee.hasMany(Project, { foreignKey: 'project_manager_id', as: 'managed_projects' });
 Project.belongsTo(Employee, { foreignKey: 'project_manager_id', as: 'project_manager' });
@@ -265,6 +266,9 @@ WorkToolRequest.belongsTo(Project, { foreignKey: 'project_id', as: 'project' });
 
 WorkToolReturnRequest.belongsTo(WorkToolRequest, { foreignKey: 'work_tool_request_id', as: 'work_tool_request' });
 
+CvRequest.belongsTo(Employee, { foreignKey: 'employee_id', as: 'employee' });
+Employee.hasMany(CvRequest, { foreignKey: 'employee_id', as: 'cv_templates' });
+
 module.exports = {
     sequelize,
     Client,
@@ -325,6 +329,8 @@ module.exports = {
     PurchaseType,
     SoftwareInstallationRequest,
     WorkToolRequest,
-    WorkToolReturnRequest
+    WorkToolReturnRequest,
+    CvRequest
+
 
 };
