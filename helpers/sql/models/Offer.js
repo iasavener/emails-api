@@ -9,6 +9,10 @@ module.exports = (sequelize) => {
       primaryKey: true,
       allowNull: false
     },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     client_id: {
       type: DataTypes.INTEGER,
       allowNull: false
