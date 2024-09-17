@@ -57,6 +57,9 @@ const SoftwareInstallationRequest = require('./models/SoftwareInstallationReques
 const WorkToolRequest = require('./models/WorkToolRequest')(sequelize);
 const WorkToolReturnRequest = require('./models/WorkToolReturnRequest')(sequelize);
 const CvRequest = require('./models/CvRequest')(sequelize);
+const ExpenseNotesRequest = require('./models/ExpenseNotesRequest')(sequelize);
+const ExpenseNotesRequestAttachment = require('./models/ExpenseNotesRequestAttachment')(sequelize);
+const ExpenseNotesRequestType = require('./models/ExpenseNotesRequestType')(sequelize);
 
 Employee.hasMany(Project, { foreignKey: 'project_manager_id', as: 'managed_projects' });
 Project.belongsTo(Employee, { foreignKey: 'project_manager_id', as: 'project_manager' });
@@ -120,6 +123,7 @@ Role.hasMany(PlatformSubSectionAllowed, { foreignKey: 'role_id', as: 'sub_sectio
 
 Employee.belongsTo(Role, { foreignKey: 'role_id', as: 'role' });
 Employee.belongsTo(Department, { foreignKey: 'department_id', as: 'department' });
+Employee.belongsTo(DepartmentArea, { foreignKey: 'department_id', as: 'department_area' });
 Employee.belongsTo(Employee, { foreignKey: 'created_by', as: 'creator' });
 Employee.belongsTo(Employee, { foreignKey: 'updated_by', as: 'editor' });
 Employee.hasMany(TimeRecord, { foreignKey: 'employee_id', as: 'time_records' });
@@ -264,6 +268,20 @@ WorkToolRequest.belongsTo(Employee, { foreignKey: 'employee_id', as: 'creator' }
 WorkToolRequest.belongsTo(WorkTool, { foreignKey: 'work_tool_id', as: 'work_tool' });
 WorkToolRequest.belongsTo(Project, { foreignKey: 'project_id', as: 'project' });
 
+
+ExpenseNotesRequest.belongsTo(Employee, { foreignKey: 'employee_id', as: 'creator' });
+ExpenseNotesRequest.belongsTo(Project, { foreignKey: 'project_id', as: 'project' });
+ExpenseNotesRequest.belongsTo(Offer, { foreignKey: 'offer_id', as: 'offer' });
+ExpenseNotesRequest.hasMany(ExpenseNotesRequestAttachment, {
+    foreignKey: 'expense_note_request_id',
+    as: 'attachments'
+});
+ExpenseNotesRequestAttachment.belongsTo(ExpenseNotesRequest, {
+    foreignKey: 'expense_note_request_id'
+});
+ExpenseNotesRequest.belongsToMany(TypeExpenseNote, { through: ExpenseNotesRequestType, foreignKey: 'expense_note_request_id', otherKey: 'expense_type_id', as: 'expense_types' });
+TypeExpenseNote.belongsToMany(ExpenseNotesRequest, { through: ExpenseNotesRequestType, foreignKey: 'expense_type_id', otherKey: 'expense_note_request_id', as: 'expense_note_requests' });
+
 WorkToolReturnRequest.belongsTo(WorkToolRequest, { foreignKey: 'work_tool_request_id', as: 'work_tool_request' });
 
 CvRequest.belongsTo(Employee, { foreignKey: 'employee_id', as: 'employee' });
@@ -330,7 +348,8 @@ module.exports = {
     SoftwareInstallationRequest,
     WorkToolRequest,
     WorkToolReturnRequest,
-    CvRequest
-
-
+    CvRequest,
+    ExpenseNotesRequest,
+    ExpenseNotesRequestAttachment,
+    ExpenseNotesRequestType
 };
