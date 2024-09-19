@@ -40,7 +40,6 @@ const ProviderSector = require('./models/ProviderSector')(sequelize);
 const New = require('./models/New')(sequelize);
 const NewMessage = require('./models/NewMessage')(sequelize);
 const Offer = require('./models/Offer')(sequelize);
-const OfferRequest = require('./models/OfferRequest')(sequelize);
 const OfferLossReason = require('./models/OfferLossReason')(sequelize);
 const OfferStage = require('./models/OfferStage')(sequelize);
 const GeneralConversation = require('./models/GeneralConversation')(sequelize);
@@ -60,6 +59,7 @@ const CvRequest = require('./models/CvRequest')(sequelize);
 const ExpenseNotesRequest = require('./models/ExpenseNotesRequest')(sequelize);
 const ExpenseNotesRequestAttachment = require('./models/ExpenseNotesRequestAttachment')(sequelize);
 const ExpenseNotesRequestType = require('./models/ExpenseNotesRequestType')(sequelize);
+const OfferEmployee = require('./models/OfferEmployee')(sequelize);
 
 Employee.hasMany(Project, { foreignKey: 'project_manager_id', as: 'managed_projects' });
 Project.belongsTo(Employee, { foreignKey: 'project_manager_id', as: 'project_manager' });
@@ -222,19 +222,6 @@ New.belongsTo(Employee, { foreignKey: 'published_by', as: 'publisher' });
 NewMessage.belongsTo(Employee, { foreignKey: 'employee_id', as: 'emisor' });
 NewMessage.belongsTo(New, {foreignKey: 'new_id'});
 
-Offer.belongsTo(Employee, { foreignKey: 'created_by', as: 'creator' });
-Offer.belongsTo(Employee, { foreignKey: 'updated_by', as: 'editor' });
-Offer.belongsTo(Client, { foreignKey: 'client_id', as: 'client' });
-Client.hasMany(Offer, { foreignKey: 'client_id', as: 'offers' });
-Offer.belongsTo(OfferStage, { foreignKey: 'stage' });
-Offer.belongsTo(OfferLossReason, { foreignKey: 'loss_reason' });
-
-OfferRequest.belongsTo(OfferStage, { foreignKey: 'current_stage' });
-OfferRequest.belongsTo(OfferStage, { foreignKey: 'next_stage' });
-OfferRequest.belongsTo(Employee, { foreignKey: 'created_by', as: 'creator' });
-OfferRequest.belongsTo(Employee, { foreignKey: 'accepted_by', as: 'supervisor' });
-OfferRequest.belongsTo(Offer, { foreignKey: 'offer_id', as: 'offer' });
-
 GeneralConversation.belongsTo(Employee, { foreignKey: 'created_by', as: 'creator' });
 
 GeneralConversationMessage.belongsTo(Employee, { foreignKey: 'employee_id', as: 'emisor' });
@@ -287,6 +274,25 @@ WorkToolReturnRequest.belongsTo(WorkToolRequest, { foreignKey: 'work_tool_reques
 CvRequest.belongsTo(Employee, { foreignKey: 'employee_id', as: 'employee' });
 Employee.hasMany(CvRequest, { foreignKey: 'employee_id', as: 'cv_templates' });
 
+Offer.belongsToMany(Employee, { through: OfferEmployee, foreignKey: 'offer_id', otherKey: 'employee_id', as: 'employees' });
+Employee.belongsToMany(Offer, { through: OfferEmployee, foreignKey: 'employee_id', otherKey: 'offer_id', as: 'offers' });
+
+
+Offer.belongsTo(Employee, { foreignKey: 'created_by', as: 'creator' });
+Offer.belongsTo(Employee, { foreignKey: 'updated_by', as: 'editor' });
+Offer.belongsTo(Employee, { foreignKey: 'deleted_by', as: 'remover' });
+Offer.belongsTo(Employee, { foreignKey: 'technician_id', as: 'technician' });
+Offer.belongsTo(Client, { foreignKey: 'client_id', as: 'client' });
+Client.hasMany(Offer, { foreignKey: 'client_id', as: 'offers' });
+Offer.belongsTo(OfferStage, { foreignKey: 'stage_id', as: 'stage' });
+Offer.belongsTo(OfferStage, { foreignKey: 'origin_stage_id', as: 'origin_stage' });
+Offer.belongsTo(OfferLossReason, { foreignKey: 'loss_reason_id', as: 'loss_reason' });
+OfferEmployee.belongsTo(Offer, { foreignKey: 'offer_id' });
+OfferEmployee.belongsTo(Employee, { foreignKey: 'employee_id', as: 'employee' });
+OfferEmployee.belongsTo(Employee, { foreignKey: 'deleted_by', as: 'remover' });
+OfferEmployee.belongsTo(Employee, { foreignKey: 'created_by', as: 'creator' });
+OfferEmployee.belongsTo(Employee, { foreignKey: 'updated_by', as: 'editor' });
+
 module.exports = {
     sequelize,
     Client,
@@ -332,7 +338,6 @@ module.exports = {
     New,
     NewMessage,
     Offer,
-    OfferRequest,
     OfferLossReason,
     OfferStage,
     GeneralConversation,
@@ -351,5 +356,6 @@ module.exports = {
     CvRequest,
     ExpenseNotesRequest,
     ExpenseNotesRequestAttachment,
-    ExpenseNotesRequestType
+    ExpenseNotesRequestType,
+    OfferEmployee
 };

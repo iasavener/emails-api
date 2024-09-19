@@ -222,7 +222,17 @@ const EmailsService = {
     } else if (category === "work_tool_return_request_confirmed") {
       subject = `Devolución de equipo de trabajo confirmada`;
       contentHTML = `<p>Se ha confirmado la devolución del equipo de trabajo ${metadata.work_tool} (${metadata.quantity}) para el proyecto ${metadata.project} para la fecha ${metadata.date} en ${metadata.location}.</p><p>Anotaciones: ${metadata.annotations || "-"}`;
+    } else if (category === "expense_notes_request_received") {
+      subject = `${metadata.employee} ha solicitado una nota de gasto`
+      contentHTML = `<p>${metadata.employee} ha solicitado una nota de gasto para el proyecto ${metadata.project} en fecha ${metadata.date} por una cantidad de ${metadata.amount}.</p><p>Motivo: ${metadata.reason}</p>`;
+    } else if (category === 'expense_notes_request_accepted') {
+      subject = `Solicitud de nota de gasto aprobada`;
+      contentHTML = `<p>Se ha aprobado la solicitud de la nota de gasto para el proyecto ${metadata.project} para la fecha ${metadata.date} por una cantidad de ${metadata.amount}solicitada.</p>`;
+    } else if (category === 'expense_notes_request_rejected') {
+      subject = `Solicitud de nota de gasto rechazada`;
+      contentHTML = `<p>Se ha rechazado tu solicitado del nota de gasto para el project ${metadata.project} para la fecha ${metadata.date} por una cantidad de ${metadata.amount}.</p><p>Motivo: ${metadata.rejection_reason || "-"}</p>`;
     }
+  
 
     for (const recipient of to) {
       let email = recipient;
