@@ -60,6 +60,7 @@ const ExpenseNotesRequest = require('./models/ExpenseNotesRequest')(sequelize);
 const ExpenseNotesRequestAttachment = require('./models/ExpenseNotesRequestAttachment')(sequelize);
 const ExpenseNotesRequestType = require('./models/ExpenseNotesRequestType')(sequelize);
 const OfferEmployee = require('./models/OfferEmployee')(sequelize);
+const Notification = require('./models/Notification')(sequelize);
 
 Employee.hasMany(Project, { foreignKey: 'project_manager_id', as: 'managed_projects' });
 Project.belongsTo(Employee, { foreignKey: 'project_manager_id', as: 'project_manager' });
@@ -293,6 +294,14 @@ OfferEmployee.belongsTo(Employee, { foreignKey: 'deleted_by', as: 'remover' });
 OfferEmployee.belongsTo(Employee, { foreignKey: 'created_by', as: 'creator' });
 OfferEmployee.belongsTo(Employee, { foreignKey: 'updated_by', as: 'editor' });
 
+Notification.belongsTo(Employee, {foreignKey: 'created_by', as: 'creator'});
+Notification.belongsTo(Employee, {foreignKey: 'recipient_id', as: 'recipient'});
+Notification.belongsTo(Employee, {foreignKey: 'sender_id', as: 'sender'});
+Notification.belongsTo(Project, { foreignKey: 'project_id', as: 'project' });
+Notification.belongsTo(Offer, { foreignKey: 'offer_id', as: 'offer' });
+Notification.belongsTo(Client, { foreignKey: 'client_id', as: 'client' });
+
+
 module.exports = {
     sequelize,
     Client,
@@ -357,5 +366,6 @@ module.exports = {
     ExpenseNotesRequest,
     ExpenseNotesRequestAttachment,
     ExpenseNotesRequestType,
-    OfferEmployee
+    OfferEmployee,
+    Notification
 };

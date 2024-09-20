@@ -231,6 +231,12 @@ const EmailsService = {
     } else if (category === 'expense_notes_request_rejected') {
       subject = `Solicitud de nota de gasto rechazada`;
       contentHTML = `<p>Se ha rechazado tu solicitado del nota de gasto para el project ${metadata.project} para la fecha ${metadata.date} por una cantidad de ${metadata.amount}.</p><p>Motivo: ${metadata.rejection_reason || "-"}</p>`;
+    } else if (category === 'notification_sent') {
+      subject = `Notrificación recibida de ${metadata.employee} `;
+      contentHTML = `<p>Ha recibido una notificación para el ${metadata.project || metadata.offer}</p><p>Contenido: ${metadata.content}</p>`
+    } else if (category === 'notification_read') {
+      subject = `Notificación leida por ${metadata.recipient}`;
+      contentHTML = `<p>La notificación ha sido leida para el ${metadata.project || metadata.offer}</p>`
     }
   
 
