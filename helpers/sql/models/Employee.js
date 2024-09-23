@@ -134,6 +134,11 @@ module.exports = (sequelize) => {
       allowNull: false,
       defaultValue: false
     },
+    business_development: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
     created_by: {
       type: DataTypes.INTEGER,
       allowNull: true
