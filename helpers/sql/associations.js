@@ -283,6 +283,7 @@ Offer.belongsTo(Employee, { foreignKey: 'created_by', as: 'creator' });
 Offer.belongsTo(Employee, { foreignKey: 'updated_by', as: 'editor' });
 Offer.belongsTo(Employee, { foreignKey: 'deleted_by', as: 'remover' });
 Offer.belongsTo(Employee, { foreignKey: 'technician_id', as: 'technician' });
+Offer.belongsTo(Employee, { foreignKey: 'owner_id', as: 'owner' });
 Offer.belongsTo(Client, { foreignKey: 'client_id', as: 'client' });
 Client.hasMany(Offer, { foreignKey: 'client_id', as: 'offers' });
 Offer.belongsTo(OfferStage, { foreignKey: 'stage_id', as: 'stage' });

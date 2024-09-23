@@ -31,7 +31,7 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING
         },
         offer_id: {
-            type: DataTypes.INTEGER
+            type: DataTypes.STRING
         },
         client_id: {
             type: DataTypes.INTEGER
