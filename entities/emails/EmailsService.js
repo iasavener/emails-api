@@ -236,9 +236,9 @@ const EmailsService = {
       contentHTML = `<p>Ha recibido una notificación para el ${metadata.project || metadata.offer}</p><p>Contenido: ${metadata.content}</p>`
     } else if (category === 'notification_read') {
       subject = `Notificación leida por ${metadata.recipient}`;
-      contentHTML = `<p>La notificación ha sido leida para el ${metadata.project || metadata.offer}</p>`
+      contentHTML = `<p>La notificación ha sido leida para el ${metadata.project || metadata.offer}</p><p>Respuesta: ${metadata.reply}</p>`
     }
-  
+    console.log(contentHTML)
 
     for (const recipient of to) {
       let email = recipient;

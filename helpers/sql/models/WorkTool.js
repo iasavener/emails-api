@@ -15,6 +15,12 @@ module.exports = (sequelize) => {
       allowNull: false,
       unique: true
     },
+    items: {
+      type: DataTypes.INTEGER,
+    },
+    available_items: {
+      type: DataTypes.INTEGER,
+    },
     created_by: {
       type: DataTypes.INTEGER,
       allowNull: true

@@ -23,6 +23,10 @@ module.exports = (sequelize) => {
             type: DataTypes.TEXT,
             allowNull: true
         },
+        reply: {
+            type: DataTypes.TEXT,
+            allowNull: true
+        },
         is_read: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
