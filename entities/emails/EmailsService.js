@@ -224,7 +224,7 @@ const EmailsService = {
       contentHTML = `<p>Se ha confirmado la devolución del equipo de trabajo ${metadata.work_tool} (${metadata.quantity}) para el proyecto ${metadata.project} para la fecha ${metadata.date} en ${metadata.location}.</p><p>Anotaciones: ${metadata.annotations || "-"}`;
     } else if (category === "expense_notes_request_received") {
       subject = `${metadata.employee} ha solicitado una nota de gasto`
-      contentHTML = `<p>${metadata.employee} ha solicitado una nota de gasto para el proyecto ${metadata.project} en fecha ${metadata.date} por una cantidad de ${metadata.amount}.</p><p>Motivo: ${metadata.reason}</p>`;
+      contentHTML = `<p>${metadata.employee} ha solicitado una nota de gasto para ${metadata.project ? metadata.project : metadata.offer} en fecha ${metadata.date} por una cantidad de ${metadata.amount}.</p><p>Motivo: ${metadata.reason}</p>`;
     } else if (category === 'expense_notes_request_accepted') {
       subject = `Solicitud de nota de gasto aprobada`;
       contentHTML = `<p>Se ha aprobado la solicitud de la nota de gasto para el proyecto ${metadata.project} para la fecha ${metadata.date} por una cantidad de ${metadata.amount}solicitada.</p>`;
