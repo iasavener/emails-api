@@ -23,7 +23,7 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       allowNull: true
     },
-    structual_purchase: {
+    structural_purchase: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
     },

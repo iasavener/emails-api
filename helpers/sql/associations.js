@@ -61,6 +61,7 @@ const ExpenseNotesRequestAttachment = require('./models/ExpenseNotesRequestAttac
 const ExpenseNotesRequestType = require('./models/ExpenseNotesRequestType')(sequelize);
 const OfferEmployee = require('./models/OfferEmployee')(sequelize);
 const Notification = require('./models/Notification')(sequelize);
+const Reminder = require('./models/Reminder')(sequelize);
 
 Employee.hasMany(Project, { foreignKey: 'project_manager_id', as: 'managed_projects' });
 Project.belongsTo(Employee, { foreignKey: 'project_manager_id', as: 'project_manager' });
@@ -303,6 +304,9 @@ Notification.belongsTo(Offer, { foreignKey: 'offer_id', as: 'offer' });
 Notification.belongsTo(Client, { foreignKey: 'client_id', as: 'client' });
 
 
+Reminder.belongsTo(Employee, { foreignKey: 'employee_id', as: 'employee' });
+
+
 module.exports = {
     sequelize,
     Client,
@@ -368,5 +372,6 @@ module.exports = {
     ExpenseNotesRequestAttachment,
     ExpenseNotesRequestType,
     OfferEmployee,
-    Notification
+    Notification,
+    Reminder
 };
