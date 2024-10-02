@@ -5,9 +5,13 @@ class PlatformPermission extends Model {}
 module.exports = (sequelize) => {
   PlatformPermission.init({
     id: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       primaryKey: true,
-      allowNull: false
+      autoIncrement: true
+    },
+    key: {
+      type: DataTypes.STRING,
+      // allowNull: false
     },
     platform_sub_section_id: {
       type: DataTypes.STRING,

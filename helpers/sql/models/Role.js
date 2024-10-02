@@ -14,6 +14,10 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    is_template: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
+    },
     created_by: {
       type: DataTypes.INTEGER,
       allowNull: true
