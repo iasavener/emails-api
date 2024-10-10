@@ -224,16 +224,34 @@ const EmailsService = {
       contentHTML = `<p>Se ha confirmado la devolución del equipo de trabajo ${metadata.work_tool} (${metadata.quantity}) para el proyecto ${metadata.project} para la fecha ${metadata.date} en ${metadata.location}.</p><p>Anotaciones: ${metadata.annotations || "-"}`;
     } else if (category === "expense_notes_request_received") {
       subject = `${metadata.employee} ha solicitado una nota de gasto`
-      contentHTML = `<p>${metadata.employee} ha solicitado una nota de gasto para ${metadata.project ? metadata.project : metadata.offer} en fecha ${metadata.date} por una cantidad de ${metadata.amount}.</p><p>Motivo: ${metadata.reason}</p>`;
+      if(metadata.project){
+        contentHTML = `<p>${metadata.employee} ha solicitado una nota de gasto para el proyecto ${metadata.project} en fecha ${metadata.date} por una cantidad de ${metadata.amount}.</p><p>Motivo: ${metadata.reason}</p>`;
+      } else if(metadata.offer) {
+        contentHTML = `<p>${metadata.employee} ha solicitado una nota de gasto para la oferta ${metadata.offer} en fecha ${metadata.date} por una cantidad de ${metadata.amount}.</p><p>Motivo: ${metadata.reason}</p>`;
+      }
     } else if (category === 'expense_notes_request_accepted') {
       subject = `Solicitud de nota de gasto aprobada`;
-      contentHTML = `<p>Se ha aprobado la solicitud de la nota de gasto para el proyecto ${metadata.project} para la fecha ${metadata.date} por una cantidad de ${metadata.amount}solicitada.</p>`;
+      contentHTML = `<p>Se ha aprobado la solicitud de la nota de gasto para el proyecto ${metadata.project} para la fecha ${metadata.date} por una cantidad de ${metadata.amount} solicitada.</p>`;
     } else if (category === 'expense_notes_request_rejected') {
       subject = `Solicitud de nota de gasto rechazada`;
-      contentHTML = `<p>Se ha rechazado tu solicitado del nota de gasto para el project ${metadata.project} para la fecha ${metadata.date} por una cantidad de ${metadata.amount}.</p><p>Motivo: ${metadata.rejection_reason || "-"}</p>`;
+      if(metadata.project) {
+        contentHTML = `<p>Se ha rechazado tu solicitado del nota de gasto para el project ${metadata.project} para la fecha ${metadata.date} por una cantidad de ${metadata.amount}.</p><p>Motivo: ${metadata.rejection_reason || "-"}</p>`;
+      } else if(metadata.offer) {
+        contentHTML = `<p>Se ha rechazado tu solicitado del nota de gasto para la oferta ${metadata.offer} para la fecha ${metadata.date} por una cantidad de ${metadata.amount}.</p><p>Motivo: ${metadata.rejection_reason || "-"}</p>`;
+      }
     } else if (category === 'notification_sent') {
       subject = `Notrificación recibida de ${metadata.employee} `;
-      contentHTML = `<p>Ha recibido una notificación para el ${metadata.project || metadata.offer}</p><p>Contenido: ${metadata.content}</p>`
+      if(metadata.project) {
+        contentHTML = `<p>Ha recibido una notificación para el proyecto ${metadata.project}</p><p>Contenido: ${metadata.content}</p>`
+      } else if (metadata.offer) {
+        contentHTML = `<p>Ha recibido una notificación para la oferta ${metadata.offer}</p><p>Contenido: ${metadata.content}</p>`
+      } else if (metadata.expenseNoteProjectRequest) {
+        contentHTML = `<p>Ha recibido una notificación para la nota de gasto del proyecto ${metadata.expenseNoteProjectRequest}</p><p>Contenido: ${metadata.content}</p>`
+      } else if (metadata.expenseNoteOfferRequest) {
+        contentHTML = `<p>Ha recibido una notificación para la nota de gasto del proyecto ${metadata.expenseNoteOfferRequest}</p><p>Contenido: ${metadata.content}</p>`
+      } else if (metadata.workToolRequest) {
+        contentHTML = `<p>Ha recibido una notificación para la nota de gasto del equipo de trabajo ${metadata.workToolRequest}</p><p>Contenido: ${metadata.content}</p>`
+      }
     } else if (category === 'notification_read') {
       subject = `Notificación leida por ${metadata.recipient}`;
       contentHTML = `<p>La notificación ha sido leida para el ${metadata.project || metadata.offer}</p><p>Respuesta: ${metadata.reply}</p>`
@@ -250,13 +268,13 @@ const EmailsService = {
         email = employee.dataValues.email;
       }
 
-      await transporter.sendMail({
-        from: notificationsSettings.email,
-        to: email,
-        subject: subject || 'Prueba',
-        html: `${contentHTML}<br><br>${notificationsSettings.signature}`,
-        attachments: attachments
-      });
+      // await transporter.sendMail({
+      //   from: notificationsSettings.email,
+      //   to: email,
+      //   subject: subject || 'Prueba',
+      //   html: `${contentHTML}<br><br>${notificationsSettings.signature}`,
+      //   attachments: attachments
+      // });
       console.log(`Mensaje enviado correctamente a ${email}`);
     }
 
