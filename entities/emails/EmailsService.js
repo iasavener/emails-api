@@ -199,7 +199,7 @@ const EmailsService = {
       } de la Saverteca.</p><p>Motivo: ${metadata.rejection_reason || "-"}</p>`;
     } else if (category === "software_installation_request_received") {
       subject = `${metadata.employee} ha solicitado la instalación de software`;
-      contentHTML = `<p>${metadata.employee} ha solicitado la instalación de la versión ${metadata.software} de ${metadata.software} en el equipo de trabajo ${metadata.workstation}.</p><p>Motivo: ${metadata.reason}</p>`;
+      contentHTML = `<p>${metadata.employee} ha solicitado la instalación de la versión ${metadata.version} de ${metadata.software} en el equipo de trabajo ${metadata.workstation}.</p><p>Motivo: ${metadata.reason}</p>`;
     } else if (category === "software_installation_request_completed") {
       subject = `Solicitud de instalación de software aprobada`;
       contentHTML = `<p>Se ha aprobado la instalación de la versión ${metadata.version} de ${metadata.software} en el equipo ${metadata.workstation} solicitada.</p>`;
