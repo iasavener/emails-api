@@ -255,6 +255,9 @@ const EmailsService = {
     } else if (category === 'notification_read') {
       subject = `Notificación leida por ${metadata.recipient}`;
       contentHTML = `<p>La notificación ha sido leida para el ${metadata.project || metadata.offer}</p><p>Respuesta: ${metadata.reply}</p>`
+    } else if (category === 'purchase_request_received') {
+      subject = `${metadata.employee} ha solicitado una compra`
+      contentHTML = `<p>${metadata.employee} ha solicitado una compra para el proyecto ${metadata.project} en fecha límite ${metadata.deadline} por una cantidad de ${metadata.quantity} y un precio ${metadata.amount}.</p><p>Motivo: ${metadata.justification}</p>`;
     }
     console.log(contentHTML)
 

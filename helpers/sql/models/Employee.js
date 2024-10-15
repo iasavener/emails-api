@@ -161,6 +161,9 @@ module.exports = (sequelize) => {
     },
     email_configuration: {
       type: DataTypes.STRING,
+    },
+    purchase_limit: {
+      type: DataTypes.INTEGER
     }
   }, {
     sequelize,
