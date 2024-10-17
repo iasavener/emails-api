@@ -231,33 +231,85 @@ const EmailsService = {
       }
     } else if (category === 'expense_notes_request_accepted') {
       subject = `Solicitud de nota de gasto aprobada`;
-      contentHTML = `<p>Se ha aprobado la solicitud de la nota de gasto para el proyecto ${metadata.project} para la fecha ${metadata.date} por una cantidad de ${metadata.amount} solicitada.</p>`;
+      if (metadata.project) {
+        contentHTML = `<p>Se ha aprobado la solicitud de la nota de gasto para el proyecto ${metadata.project} para la fecha ${metadata.date} por una cantidad de ${metadata.amount} solicitada.</p>`;
+      } else if (metadata.offer) {
+        contentHTML = `<p>Se ha aprobado la solicitud de la nota de gasto para la oferta ${metadata.offer} para la fecha ${metadata.date} por una cantidad de ${metadata.amount} solicitada.</p>`;
+      }
     } else if (category === 'expense_notes_request_rejected') {
       subject = `Solicitud de nota de gasto rechazada`;
       if(metadata.project) {
-        contentHTML = `<p>Se ha rechazado tu solicitado del nota de gasto para el project ${metadata.project} para la fecha ${metadata.date} por una cantidad de ${metadata.amount}.</p><p>Motivo: ${metadata.rejection_reason || "-"}</p>`;
+        contentHTML = `<p>Se ha rechazado tu solicitud del nota de gasto para el proyecto ${metadata.project} para la fecha ${metadata.date} por una cantidad de ${metadata.amount}.</p><p>Motivo: ${metadata.rejection_reason || "-"}</p>`;
       } else if(metadata.offer) {
-        contentHTML = `<p>Se ha rechazado tu solicitado del nota de gasto para la oferta ${metadata.offer} para la fecha ${metadata.date} por una cantidad de ${metadata.amount}.</p><p>Motivo: ${metadata.rejection_reason || "-"}</p>`;
+        contentHTML = `<p>Se ha rechazado tu solicitud del nota de gasto para la oferta ${metadata.offer} para la fecha ${metadata.date} por una cantidad de ${metadata.amount}.</p><p>Motivo: ${metadata.rejection_reason || "-"}</p>`;
       }
     } else if (category === 'notification_sent') {
       subject = `Notrificación recibida de ${metadata.employee} `;
       if(metadata.project) {
-        contentHTML = `<p>Ha recibido una notificación para el proyecto ${metadata.project}</p><p>Contenido: ${metadata.content}</p>`
+        contentHTML = `<p>Ha recibido una notificación para el proyecto ${metadata.project}.</p><p>Contenido: ${metadata.content}</p>`
       } else if (metadata.offer) {
-        contentHTML = `<p>Ha recibido una notificación para la oferta ${metadata.offer}</p><p>Contenido: ${metadata.content}</p>`
+        contentHTML = `<p>Ha recibido una notificación para la oferta ${metadata.offer}.</p><p>Contenido: ${metadata.content}</p>`
       } else if (metadata.expenseNoteProjectRequest) {
-        contentHTML = `<p>Ha recibido una notificación para la nota de gasto del proyecto ${metadata.expenseNoteProjectRequest}</p><p>Contenido: ${metadata.content}</p>`
+        contentHTML = `<p>Ha recibido una notificación para la nota de gasto del proyecto ${metadata.expenseNoteProjectRequest}.</p><p>Contenido: ${metadata.content}</p>`
       } else if (metadata.expenseNoteOfferRequest) {
-        contentHTML = `<p>Ha recibido una notificación para la nota de gasto del proyecto ${metadata.expenseNoteOfferRequest}</p><p>Contenido: ${metadata.content}</p>`
+        contentHTML = `<p>Ha recibido una notificación para la nota de gasto de la oferta ${metadata.expenseNoteOfferRequest}.</p><p>Contenido: ${metadata.content}</p>`
       } else if (metadata.workToolRequest) {
-        contentHTML = `<p>Ha recibido una notificación para la nota de gasto del equipo de trabajo ${metadata.workToolRequest}</p><p>Contenido: ${metadata.content}</p>`
+        contentHTML = `<p>Ha recibido una notificación para el equipo de trabajo ${metadata.workToolRequest}.</p><p>Contenido: ${metadata.content}</p>`
+      } else if (metadata.operationalSoftwareInstallationRequest){
+        contentHTML = `<p>Ha recibido una notificación para solicitar instalación de software operacional.</p><p>Contenido: ${metadata.content}</p>`
+      } else if (metadata.nonOperationalSoftwareInstallationRequest) {
+        contentHTML = `<p>Ha recibido una notificación para solicitar instalación de software no operacional.</p><p>Contenido: ${metadata.content}</p>`
+      } else if (metadata.operationalHolidayRequest) {
+        contentHTML = `<p>Ha recibido una notificación para vacaciones opearacionales.</p><p>Contenido: ${metadata.content}</p>`
+      } else if (metadata.nonOperationalHolidayRequest) {
+        contentHTML = `<p>Ha recibido una notificación para vacaciones no operacionales.</p><p>Contenido: ${metadata.content}</p>`
+      } else if (metadata.operationalPaidLeaveRequest) {
+        contentHTML = `<p>Ha recibido una notificación para permisos retribuidos operacionales.</p><p>Contenido: ${metadata.content}</p>`
+      } else if (metadata.nonOperationalPaidLeaveRequest) {
+        contentHTML = `<p>Ha recibido una notificación para permisos retribuidos no operacionales.</p><p>Contenido: ${metadata.content}</p>`
+      } else if (metadata.savertecaRequest) {
+        contentHTML = `<p>Ha recibido una notificación para saverteca.</p><p>Contenido: ${metadata.content}</p>`
+      } else if (metadata.structuralPurchaseRequest) {
+        contentHTML = `<p>Ha recibido una notificación para compras estructurales.</p><p>Contenido: ${metadata.content}</p>`
+      } else if (metadata.projectPurchaseRequest) {
+        contentHTML = `<p>Ha recibido una notificación para compras de proyecto.</p><p>Contenido: ${metadata.content}</p>`
+      } else if (metadata.managementPurchaseRequest) {
+        contentHTML = `<p>Ha recibido una notificación para compras de dirección.</p><p>Contenido: ${metadata.content}</p>`
+      } else if (metadata.operationalDepartmentPurchaseRequest) {
+        contentHTML = `<p>Ha recibido una notificación para compras de departamento operacionales.</p><p>Contenido: ${metadata.content}</p>`
+      } else if (metadata.nonOperationalDepartmentPurchaseRequest) {
+        contentHTML = `<p>Ha recibido una notificación para compras de departamento no operacionales.</p><p>Contenido: ${metadata.content}</p>`
       }
     } else if (category === 'notification_read') {
       subject = `Notificación leida por ${metadata.recipient}`;
       contentHTML = `<p>La notificación ha sido leida para el ${metadata.project || metadata.offer}</p><p>Respuesta: ${metadata.reply}</p>`
     } else if (category === 'purchase_request_received') {
       subject = `${metadata.employee} ha solicitado una compra`
-      contentHTML = `<p>${metadata.employee} ha solicitado una compra para el proyecto ${metadata.project} en fecha límite ${metadata.deadline} por una cantidad de ${metadata.quantity} y un precio ${metadata.amount}.</p><p>Motivo: ${metadata.justification}</p>`;
+      contentHTML = `<p>${metadata.employee} ha solicitado una compra para el proyecto ${metadata.project} en fecha límite ${metadata.deadline} por una cantidad de ${metadata.quantity} y un precio de ${metadata.amount}.</p><p>Motivo: ${metadata.justification}</p>`;
+    } else if (category === 'purchase_request_accepted'){
+      subject = `Solicitud de compra aprobada`;
+      contentHTML = `<p>Se ha aprobado la solicitud de compra para el proyecto ${metadata.project} por una cantidad de ${metadata.amount}.</p>`;
+    } else if (category === 'purchase_request_rejected') {
+      subject = `Solicitud de compra rechazada`;
+      contentHTML = `<p>Se ha rechazado tu solicitud de compra para el propyecto ${metadata.project} para la fecha limite ${metadata.deadline} por una cantidad de ${metadata.quantity} y un precio de ${metadata.amount}.</p><p>Motivo: ${metadata.rejection_reason || "-"}</p>`;
+    } else if (category === 'holiday_request_received') {
+      subject = `${metadata.employee} ha creado una solicitud de vacaciones`;
+      contentHTML = `<p>${metadata.employee} ha creado una solicitud de vacaciones desde ${metadata.start_date} hasta ${metadata.end_date}.</p><p>Motivo: ${metadata.justification}</p>`;
+    } else if (category === 'holiday_request_completed') {
+      subject = `Solicitud de vacaciones aprobada`;
+      contentHTML = `<p>Se ha aprobado tu solicitud de vacaciones.</p>`;
+    } else if (category === 'holiday_request_rejected') {
+      subject = `Solicitud de vacaciones rechazada`;
+      contentHTML = `<p>Se ha rechazado tu solicitado de vacaciones.</p><p>Motivo: ${metadata.rejection_reason || "-"}</p>`;
+    } else if (category === 'paid_leave_request_received') {
+      subject = `${metadata.employee} ha creado una solicitud para de permiso retribuido`;
+      contentHTML = `<p>${metadata.employee} ha creado una solicitud de permiso retribuido desde ${metadata.start_date} hasta ${metadata.end_date}.</p><p>Motivo: ${metadata.reason}</p>`;
+    } else if (category === 'paid_leave_request_accepted') {
+      subject = `Solicitud de permiso retribuido aprobado`;
+      contentHTML = `<p>Se ha aprobado tu solicitud de permiso retribuido.</p>`;
+    } else if (category === 'paid_leave_request_rejected') {
+      subject = `Solicitud de permiso retribuido rechazado`;
+      contentHTML = `<p>Se ha rechazado tu solicitud de permiso retribuido.</p><p>Motivo: ${metadata.rejection_reason || "-"}</p>`;
     }
     console.log(contentHTML)
 
