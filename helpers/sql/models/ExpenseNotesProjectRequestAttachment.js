@@ -1,9 +1,9 @@
 const { DataTypes, Model } = require('sequelize');
 
-class ExpenseNotesRequestAttachment extends Model {}
+class ExpenseNotesProjectRequestAttachment extends Model {}
 
 module.exports = (sequelize) => {
-    ExpenseNotesRequestAttachment.init({
+    ExpenseNotesProjectRequestAttachment.init({
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -19,9 +19,9 @@ module.exports = (sequelize) => {
         }
 }, {
     sequelize,
-    modelName: 'ExpenseNotesRequestAttachment',
-    tableName: 'expense_notes_request_attachments'
+    modelName: 'ExpenseNotesProjectRequestAttachment',
+    tableName: 'expense_notes_project_request_attachments'
 });
 
-return ExpenseNotesRequestAttachment;
+return ExpenseNotesProjectRequestAttachment;
 };

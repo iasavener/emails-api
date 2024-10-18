@@ -1,9 +1,9 @@
 const { DataTypes, Model } = require("sequelize");
 
-class SavertecaRequest extends Model {}
+class StructuralPurchaseRequest extends Model {}
 
 module.exports = (sequelize) => {
-  SavertecaRequest.init(
+  StructuralPurchaseRequest.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -15,10 +15,22 @@ module.exports = (sequelize) => {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
-      project: {
-        type: DataTypes.TEXT,
+      project_id: {
+        type: DataTypes.STRING,
       },
-      reason: {
+      purchase_id: {
+        type: DataTypes.INTEGER
+      },
+      deadline: {
+        type: DataTypes.DATE,
+      },
+      amount: {
+        type: DataTypes.INTEGER,
+      },
+      quantity: {
+        type: DataTypes.INTEGER,
+      },
+      justification: {
         type: DataTypes.TEXT,
       },
       step_1_accepted: {
@@ -36,7 +48,7 @@ module.exports = (sequelize) => {
         type: DataTypes.DATE,
       },
       step_1_accepted_by: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER
       },
       step_2_accepted: {
         type: DataTypes.BOOLEAN,
@@ -53,9 +65,9 @@ module.exports = (sequelize) => {
         type: DataTypes.DATE,
       },
       step_2_accepted_by: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER
       },
-      step_3_accepted: {
+      step_3_special_accepted: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
@@ -63,17 +75,34 @@ module.exports = (sequelize) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
-      step_3_acceptance_date: {
+      step_3_special_date: {
         type: DataTypes.DATE,
       },
       step_3_rejection_date: {
         type: DataTypes.DATE,
       },
-      step_3_accepted_by: {
-        type: DataTypes.INTEGER,
+      step_3_special_accepted_by: {
+        type: DataTypes.INTEGER
+      },
+      step_4_accepted: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
+      step_4_rejected: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
+      step_4_acceptance_date: {
+        type: DataTypes.DATE,
+      },
+      step_4_rejection_date: {
+        type: DataTypes.DATE,
+      },
+      step_4_accepted_by: {
+        type: DataTypes.INTEGER
       },
       rejected_by: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER
       },
       rejection_reason: {
         type: DataTypes.TEXT,
@@ -81,6 +110,13 @@ module.exports = (sequelize) => {
       deleted: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
+      },
+      approve: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
+      approve_by: {
+        type: DataTypes.INTEGER,
       },
       audio_file: {
         type: DataTypes.STRING,
@@ -91,10 +127,10 @@ module.exports = (sequelize) => {
     },
     {
       sequelize,
-      modelName: "SavertecaRequest",
-      tableName: "saverteca_requests",
+      modelName: "StructuralPurchaseRequest",
+      tableName: "structural_purchase_requests",
     }
   );
 
-  return SavertecaRequest;
+  return StructuralPurchaseRequest;
 };

@@ -40,6 +40,51 @@ module.exports = (sequelize) => {
         client_id: {
             type: DataTypes.INTEGER
         },
+        expense_note_project_request_id: {
+            type: DataTypes.INTEGER
+        },
+        expense_note_offer_request_id: {
+            type: DataTypes.INTEGER
+        },
+        work_tool_request_id: {
+            type: DataTypes.INTEGER
+        },
+        operational_software_installation_request_id: {
+            type: DataTypes.INTEGER
+        },
+        non_operational_software_installation_request_id: {
+            type: DataTypes.INTEGER
+        },
+        structural_purchase_request_id: {
+            type: DataTypes.INTEGER
+        },
+        project_purchase_request_id: {
+            type: DataTypes.INTEGER
+        },
+        management_purchase_request_id: {
+            type: DataTypes.INTEGER
+        },
+        operational_department_purchase_request_id: {
+            type: DataTypes.INTEGER
+        },
+        non_operational_department_purchase_request_id: {
+            type: DataTypes.INTEGER
+        },
+        operational_holiday_request_id: {
+            type:  DataTypes.INTEGER
+        },
+        non_operational_holiday_request_id: {
+            type:  DataTypes.INTEGER
+        },
+        operational_paid_leave_request_id: {
+            type:  DataTypes.INTEGER
+        },
+        non_operational_paid_leave_request_id: {
+            type:  DataTypes.INTEGER
+        },
+        saverteca_request_id: {
+            type:  DataTypes.INTEGER
+        },
         information_audio_file: {
             type: DataTypes.STRING
         },

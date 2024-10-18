@@ -1,9 +1,9 @@
 const { DataTypes, Model } = require("sequelize");
 
-class WorkToolRequest extends Model {}
+class ExpenseNotesOfferRequest extends Model {}
 
 module.exports = (sequelize) => {
-  WorkToolRequest.init(
+    ExpenseNotesOfferRequest.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -15,19 +15,13 @@ module.exports = (sequelize) => {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
-      project_id: {
-        type: DataTypes.STRING,
-      },
-      location: {
+      offer_id: {
         type: DataTypes.STRING,
       },
       date: {
         type: DataTypes.DATE,
       },
-      work_tool_id: {
-        type: DataTypes.INTEGER,
-      },
-      quantity: {
+      amount: {
         type: DataTypes.INTEGER,
       },
       reason: {
@@ -48,10 +42,44 @@ module.exports = (sequelize) => {
         type: DataTypes.DATE,
       },
       step_1_accepted_by: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER
+      },
+      step_2_accepted: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
+      step_2_rejected: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
+      step_2_acceptance_date: {
+        type: DataTypes.DATE,
+      },
+      step_2_rejection_date: {
+        type: DataTypes.DATE,
+      },
+      step_2_accepted_by: {
+        type: DataTypes.INTEGER
+      },
+      step_3_accepted: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
+      step_3_rejected: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
+      step_3_acceptance_date: {
+        type: DataTypes.DATE,
+      },
+      step_3_rejection_date: {
+        type: DataTypes.DATE,
+      },
+      step_3_accepted_by: {
+        type: DataTypes.INTEGER
       },
       rejected_by: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER
       },
       rejection_reason: {
         type: DataTypes.TEXT,
@@ -69,10 +97,10 @@ module.exports = (sequelize) => {
     },
     {
       sequelize,
-      modelName: "WorkToolRequest",
-      tableName: "work_tool_requests",
+      modelName: "ExpenseNotesOfferRequest",
+      tableName: "expense_notes_offer_requests",
     }
   );
 
-  return WorkToolRequest;
+  return ExpenseNotesOfferRequest;
 };

@@ -1,9 +1,9 @@
 const { DataTypes, Model } = require("sequelize");
 
-class WorkToolRequest extends Model {}
+class NonOperationalSoftwareInstallationRequest extends Model {}
 
 module.exports = (sequelize) => {
-  WorkToolRequest.init(
+    NonOperationalSoftwareInstallationRequest.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -15,20 +15,18 @@ module.exports = (sequelize) => {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
-      project_id: {
-        type: DataTypes.STRING,
+      department_id: {
+        type: DataTypes.TEXT,
+        allowNull: false,
       },
-      location: {
-        type: DataTypes.STRING,
+      software: {
+        type: DataTypes.TEXT,
       },
-      date: {
-        type: DataTypes.DATE,
+      version: {
+        type: DataTypes.TEXT,
       },
-      work_tool_id: {
-        type: DataTypes.INTEGER,
-      },
-      quantity: {
-        type: DataTypes.INTEGER,
+      workstation: {
+        type: DataTypes.TEXT,
       },
       reason: {
         type: DataTypes.TEXT,
@@ -48,10 +46,27 @@ module.exports = (sequelize) => {
         type: DataTypes.DATE,
       },
       step_1_accepted_by: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER
+      },
+      step_2_accepted: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
+      step_2_rejected: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
+      step_2_acceptance_date: {
+        type: DataTypes.DATE,
+      },
+      step_2_rejection_date: {
+        type: DataTypes.DATE,
+      },
+      step_2_accepted_by: {
+        type: DataTypes.INTEGER
       },
       rejected_by: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER
       },
       rejection_reason: {
         type: DataTypes.TEXT,
@@ -69,10 +84,10 @@ module.exports = (sequelize) => {
     },
     {
       sequelize,
-      modelName: "WorkToolRequest",
-      tableName: "work_tool_requests",
+      modelName: "NonOperationalSoftwareInstallationRequest",
+      tableName: "non_operational_software_installation_requests",
     }
   );
 
-  return WorkToolRequest;
+  return NonOperationalSoftwareInstallationRequest;
 };

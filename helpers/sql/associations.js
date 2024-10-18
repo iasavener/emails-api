@@ -50,18 +50,56 @@ const WorkTool = require('./models/WorkTool')(sequelize);
 const TypeExpenseNote = require('./models/TypeExpenseNote')(sequelize);
 const TypeVacation = require('./models/TypeVacation')(sequelize);
 const TypePaidLeave = require('./models/TypePaidLeave')(sequelize);
-const SavertecaRequest = require('./models/SavertecaRequest')(sequelize);
 const PurchaseType = require('./models/PurchaseType')(sequelize);
-const SoftwareInstallationRequest = require('./models/SoftwareInstallationRequest')(sequelize);
+const SavertecaRequest = require('./models/SavertecaRequest')(sequelize);
+const SavertecaRequestEmployee = require('./models/SavertecaRequestEmployee')(sequelize);
+const OperationalSoftwareInstallationRequest = require('./models/OperationalSoftwareInstallationRequest')(sequelize);
+const NonOperationalSoftwareInstallationRequest = require('./models/NonOperationalSoftwareInstallationRequest')(sequelize);
 const WorkToolRequest = require('./models/WorkToolRequest')(sequelize);
 const WorkToolReturnRequest = require('./models/WorkToolReturnRequest')(sequelize);
 const CvRequest = require('./models/CvRequest')(sequelize);
-const ExpenseNotesRequest = require('./models/ExpenseNotesRequest')(sequelize);
-const ExpenseNotesRequestAttachment = require('./models/ExpenseNotesRequestAttachment')(sequelize);
-const ExpenseNotesRequestType = require('./models/ExpenseNotesRequestType')(sequelize);
+const ExpenseNotesProjectRequest = require('./models/ExpenseNotesProjectRequest')(sequelize);
+const ExpenseNotesProjectRequestAttachment = require('./models/ExpenseNotesProjectRequestAttachment')(sequelize);
+const ExpenseNotesProjectRequestEmployee = require('./models/ExpenseNotesProjectRequestEmployee')(sequelize);
+const ExpenseNotesOfferRequest = require('./models/ExpenseNotesOfferRequest')(sequelize);
+const ExpenseNotesOfferRequestAttachment = require('./models/ExpenseNotesOfferRequestAttachment')(sequelize);
+const ExpenseNotesOfferRequestEmployee = require('./models/ExpenseNotesOfferRequestEmployee')(sequelize);
+const ExpenseNotesProjectRequestType = require('./models/ExpenseNotesProjectRequestType')(sequelize);
+const ExpenseNotesOfferRequestType = require('./models/ExpenseNotesOfferRequestType')(sequelize);
 const OfferEmployee = require('./models/OfferEmployee')(sequelize);
 const Notification = require('./models/Notification')(sequelize);
 const Reminder = require('./models/Reminder')(sequelize);
+const OperationalHolidayRequest = require('./models/OperationalHolidayRequest')(sequelize);
+const OperationalHolidayRequestEmployee = require('./models/OperationalHolidayRequestEmployee')(sequelize);
+const NonOperationalHolidayRequest = require('./models/NonOperationalHolidayRequest')(sequelize);
+const NonOperationalHolidayRequestEmployee = require('./models/NonOperationalHolidayRequestEmployee')(sequelize);
+const OperationalPaidLeaveRequest = require('./models/OperationalPaidLeaveRequest')(sequelize);
+const OperationalPaidLeaveRequestAttachment = require('./models/OperationalPaidLeaveRequestAttachment')(sequelize);
+const OperationalPaidLeaveRequestEmployee = require('./models/OperationalPaidLeaveRequestEmployee')(sequelize);
+const NonOperationalPaidLeaveRequest = require('./models/NonOperationalPaidLeaveRequest')(sequelize);
+const NonOperationalPaidLeaveRequestAttachment = require('./models/NonOperationalPaidLeaveRequestAttachment')(sequelize);
+const NonOperationalPaidLeaveRequestEmployee = require('./models/NonOperationalPaidLeaveRequestEmployee')(sequelize);
+const StructuralPurchaseRequest = require('./models/StructuralPurchaseRequest')(sequelize);
+const StructuralPurchaseRequestAttachment = require('./models/StructuralPurchaseRequestAttachment')(sequelize);
+const StructuralPurchaseRequestEmployee = require('./models/StructuralPurchaseRequestEmployee')(sequelize);
+const ProjectPurchaseRequest = require('./models/ProjectPurchaseRequest')(sequelize);
+const ProjectPurchaseRequestAttachment = require('./models/ProjectPurchaseRequestAttachment')(sequelize);
+const ProjectPurchaseRequestEmployee = require('./models/ProjectPurchaseRequestEmployee')(sequelize);
+const ManagementPurchaseRequest = require('./models/ManagementPurchaseRequest')(sequelize);
+const ManagementPurchaseRequestAttachment = require('./models/ManagementPurchaseRequestAttachment')(sequelize);
+const ManagementPurchaseRequestEmployee = require('./models/ManagementPurchaseRequestEmployee')(sequelize);
+const OperationalDepartmentPurchaseRequest = require('./models/OperationalDepartmentPurchaseRequest')(sequelize);
+const OperationalDepartmentPurchaseRequestAttachment = require('./models/OperationalDepartmentPurchaseRequestAttachment')(sequelize);
+const OperationalDepartmentPurchaseRequestEmployee = require('./models/OperationalDepartmentPurchaseRequestEmployee')(sequelize);
+const NonOperationalDepartmentPurchaseRequest = require('./models/NonOperationalDepartmentPurchaseRequest')(sequelize);
+const NonOperationalDepartmentPurchaseRequestAttachment = require('./models/NonOperationalDepartmentPurchaseRequestAttachment')(sequelize);
+const NonOperationalDepartmentPurchaseRequestEmployee = require('./models/NonOperationalDepartmentPurchaseRequestEmployee')(sequelize);
+const OperationalSoftwareInstallationRequestEmployee = require('./models/OperationalSoftwareInstallationRequestEmployee')(sequelize);
+const NonOperationalSoftwareInstallationRequestEmployee = require('./models/NonOperationalSoftwareInstallationRequestEmployee')(sequelize);
+const WorkToolRequestEmployee = require('./models/WorkToolRequestEmployee')(sequelize);
+const WorkToolReturnRequestEmployee = require('./models/WorkToolReturnRequestEmployee')(sequelize);
+
+
 
 Employee.hasMany(Project, { foreignKey: 'project_manager_id', as: 'managed_projects' });
 Project.belongsTo(Employee, { foreignKey: 'project_manager_id', as: 'project_manager' });
@@ -246,11 +284,22 @@ TypePaidLeave.belongsTo(Employee, { foreignKey: 'updated_by', as: 'editor' });
 
 SavertecaRequest.belongsTo(Employee, { foreignKey: 'employee_id', as: 'creator' });
 
+SavertecaRequest.hasMany(SavertecaRequestEmployee, {foreignKey: 'request_id'});
+SavertecaRequestEmployee.belongsTo(SavertecaRequest, { foreignKey: 'request_id' });
+SavertecaRequestEmployee.belongsTo(Employee, { foreignKey: 'employee_id' });
+
+
+SavertecaRequest.hasMany(Notification, {foreignKey: "saverteca_request_id", as: "saverteca_notifications"});
+Notification.belongsTo(SavertecaRequest, { foreignKey: "saverteca_request_id", as: "saverteca_request"});
+
 PurchaseType.belongsTo(Employee, { foreignKey: 'created_by', as: 'creator' });
 PurchaseType.belongsTo(Employee, { foreignKey: 'updated_by', as: 'editor' });
 
-SoftwareInstallationRequest.belongsTo(Employee, { foreignKey: 'employee_id', as: 'creator' });
-SoftwareInstallationRequest.belongsTo(Department, { foreignKey: 'department_id', as: 'department' });
+OperationalSoftwareInstallationRequest.belongsTo(Employee, { foreignKey: 'employee_id', as: 'creator' });
+OperationalSoftwareInstallationRequest.belongsTo(Department, { foreignKey: 'department_id', as: 'department' });
+
+NonOperationalSoftwareInstallationRequest.belongsTo(Employee, { foreignKey: 'employee_id', as: 'creator' });
+NonOperationalSoftwareInstallationRequest.belongsTo(Department, { foreignKey: 'department_id', as: 'department' });
 
 
 WorkToolRequest.belongsTo(Employee, { foreignKey: 'employee_id', as: 'creator' });
@@ -258,18 +307,43 @@ WorkToolRequest.belongsTo(WorkTool, { foreignKey: 'work_tool_id', as: 'work_tool
 WorkToolRequest.belongsTo(Project, { foreignKey: 'project_id', as: 'project' });
 
 
-ExpenseNotesRequest.belongsTo(Employee, { foreignKey: 'employee_id', as: 'creator' });
-ExpenseNotesRequest.belongsTo(Project, { foreignKey: 'project_id', as: 'project' });
-ExpenseNotesRequest.belongsTo(Offer, { foreignKey: 'offer_id', as: 'offer' });
-ExpenseNotesRequest.hasMany(ExpenseNotesRequestAttachment, {
+ExpenseNotesProjectRequest.belongsTo(Employee, { foreignKey: 'employee_id', as: 'creator' });
+ExpenseNotesOfferRequest.belongsTo(Employee, { foreignKey: 'employee_id', as: 'creator' });
+ExpenseNotesProjectRequest.belongsTo(Project, { foreignKey: 'project_id', as: 'project' });
+ExpenseNotesOfferRequest.belongsTo(Offer, { foreignKey: 'offer_id', as: 'offer' });
+ExpenseNotesProjectRequest.hasMany(ExpenseNotesProjectRequestAttachment, {
     foreignKey: 'expense_note_request_id',
     as: 'attachments'
 });
-ExpenseNotesRequestAttachment.belongsTo(ExpenseNotesRequest, {
+ExpenseNotesProjectRequestAttachment.belongsTo(ExpenseNotesProjectRequest, {
     foreignKey: 'expense_note_request_id'
 });
-ExpenseNotesRequest.belongsToMany(TypeExpenseNote, { through: ExpenseNotesRequestType, foreignKey: 'expense_note_request_id', otherKey: 'expense_type_id', as: 'expense_types' });
-TypeExpenseNote.belongsToMany(ExpenseNotesRequest, { through: ExpenseNotesRequestType, foreignKey: 'expense_type_id', otherKey: 'expense_note_request_id', as: 'expense_note_requests' });
+ExpenseNotesOfferRequest.hasMany(ExpenseNotesOfferRequestAttachment, {
+    foreignKey: 'expense_note_request_id',
+    as: 'attachments'
+});
+ExpenseNotesOfferRequestAttachment.belongsTo(ExpenseNotesOfferRequest, {
+    foreignKey: 'expense_note_request_id'
+});
+
+ExpenseNotesProjectRequest.hasMany(ExpenseNotesProjectRequestEmployee, {foreignKey: 'request_id'});
+ExpenseNotesProjectRequestEmployee.belongsTo(ExpenseNotesProjectRequest, { foreignKey: 'request_id' });
+ExpenseNotesProjectRequestEmployee.belongsTo(Employee, { foreignKey: 'employee_id' });
+
+ExpenseNotesOfferRequest.hasMany(ExpenseNotesOfferRequestEmployee, {foreignKey: 'request_id'});
+ExpenseNotesOfferRequestEmployee.belongsTo(ExpenseNotesOfferRequest, { foreignKey: 'request_id' });
+ExpenseNotesOfferRequestEmployee.belongsTo(Employee, { foreignKey: 'employee_id' });
+
+ExpenseNotesProjectRequest.belongsToMany(TypeExpenseNote, { through: ExpenseNotesProjectRequestType, foreignKey: 'expense_note_request_id', otherKey: 'expense_type_id', as: 'expense_project_types' });
+TypeExpenseNote.belongsToMany(ExpenseNotesProjectRequest, { through: ExpenseNotesProjectRequestType, foreignKey: 'expense_type_id', otherKey: 'expense_note_request_id', as: 'expense_note_project_requests' });
+ExpenseNotesOfferRequest.belongsToMany(TypeExpenseNote, { through: ExpenseNotesOfferRequestType, foreignKey: 'expense_note_request_id', otherKey: 'expense_type_id', as: 'expense_offer_types' });
+TypeExpenseNote.belongsToMany(ExpenseNotesOfferRequest, { through: ExpenseNotesOfferRequestType, foreignKey: 'expense_type_id', otherKey: 'expense_note_request_id', as: 'expense_note_offer_requests' });
+
+ExpenseNotesProjectRequest.hasMany(Notification, {foreignKey: "expense_note_project_request_id", as: "expense_note_project_notifications"});
+Notification.belongsTo(ExpenseNotesProjectRequest, { foreignKey: "expense_note_project_request_id", as: "expense_note_project_request"});
+
+ExpenseNotesOfferRequest.hasMany(Notification, {foreignKey: "expense_note_offer_request_id", as: "expense_note_offer_notifications"});
+Notification.belongsTo(ExpenseNotesOfferRequest, { foreignKey: "expense_note_offer_request_id", as: "expense_note_offer_request"});
 
 WorkToolReturnRequest.belongsTo(WorkToolRequest, { foreignKey: 'work_tool_request_id', as: 'work_tool_request' });
 
@@ -303,8 +377,138 @@ Notification.belongsTo(Project, { foreignKey: 'project_id', as: 'project' });
 Notification.belongsTo(Offer, { foreignKey: 'offer_id', as: 'offer' });
 Notification.belongsTo(Client, { foreignKey: 'client_id', as: 'client' });
 
-
 Reminder.belongsTo(Employee, { foreignKey: 'employee_id', as: 'employee' });
+
+OperationalHolidayRequest.belongsTo(Employee, { foreignKey: 'employee_id', as: 'creator' });
+NonOperationalHolidayRequest.belongsTo(Employee, { foreignKey: 'employee_id', as: 'creator' });
+OperationalHolidayRequest.belongsTo(TypeVacation, { foreignKey: 'holiday_id', as: 'holiday' });
+NonOperationalHolidayRequest.belongsTo(TypeVacation, { foreignKey: 'holiday_id', as: 'holiday' });
+
+OperationalHolidayRequest.hasMany(OperationalHolidayRequestEmployee, {foreignKey: 'request_id'});
+OperationalHolidayRequestEmployee.belongsTo(OperationalHolidayRequest, { foreignKey: 'request_id' });
+OperationalHolidayRequestEmployee.belongsTo(Employee, { foreignKey: 'employee_id' });
+NonOperationalHolidayRequest.hasMany(NonOperationalHolidayRequestEmployee, {foreignKey: 'request_id'});
+NonOperationalHolidayRequestEmployee.belongsTo(NonOperationalHolidayRequest, { foreignKey: 'request_id' });
+NonOperationalHolidayRequestEmployee.belongsTo(Employee, { foreignKey: 'employee_id' });
+
+OperationalHolidayRequest.hasMany(Notification, {foreignKey: "operational_holiday_request_id", as: "operational_holiday_notifications"});
+Notification.belongsTo(OperationalHolidayRequest, { foreignKey: "operational_holiday_request_id", as: "operational_request_request"});
+
+NonOperationalHolidayRequest.hasMany(Notification, {foreignKey: "non_operational_holiday_request_id", as: "non_operational_holiday_notifications"});
+Notification.belongsTo(NonOperationalHolidayRequest, { foreignKey: "non_operational_holiday_request_id", as: "non_operational_request_request"});
+
+
+OperationalPaidLeaveRequest.belongsTo(Employee, {foreignKey: 'employee_id', as: 'creator'});
+NonOperationalPaidLeaveRequest.belongsTo(Employee, {foreignKey: 'employee_id', as: 'creator'});
+OperationalPaidLeaveRequest.belongsTo(TypePaidLeave, { foreignKey: 'paid_leave_id', as: 'paid_leave' });
+NonOperationalPaidLeaveRequest.belongsTo(TypePaidLeave, { foreignKey: 'paid_leave_id', as: 'paid_leave' });
+OperationalPaidLeaveRequest.hasMany(OperationalPaidLeaveRequestAttachment, {foreignKey: 'paid_leave_request_id',as: 'attachments'});
+OperationalPaidLeaveRequestAttachment.belongsTo(OperationalPaidLeaveRequest, {foreignKey: 'paid_leave_request_id'});
+NonOperationalPaidLeaveRequest.hasMany(NonOperationalPaidLeaveRequestAttachment, {foreignKey: 'paid_leave_request_id',as: 'attachments'});
+NonOperationalPaidLeaveRequestAttachment.belongsTo(NonOperationalPaidLeaveRequest, {foreignKey: 'paid_leave_request_id'});
+
+OperationalPaidLeaveRequest.hasMany(OperationalPaidLeaveRequestEmployee, {foreignKey: 'request_id'});
+OperationalPaidLeaveRequestEmployee.belongsTo(OperationalPaidLeaveRequest, { foreignKey: 'request_id' });
+OperationalPaidLeaveRequestEmployee.belongsTo(Employee, { foreignKey: 'employee_id' });
+NonOperationalPaidLeaveRequest.hasMany(NonOperationalPaidLeaveRequestEmployee, {foreignKey: 'request_id'});
+NonOperationalPaidLeaveRequestEmployee.belongsTo(NonOperationalPaidLeaveRequest, { foreignKey: 'request_id' });
+NonOperationalPaidLeaveRequestEmployee.belongsTo(Employee, { foreignKey: 'employee_id' });
+
+OperationalPaidLeaveRequest.hasMany(Notification, {foreignKey: "operational_paid_leave_request_id", as: "operational_paid_leave_notifications"});
+Notification.belongsTo(OperationalPaidLeaveRequest, { foreignKey: "operational_paid_leave_request_id", as: "operational_paid_leave_request"});
+
+NonOperationalPaidLeaveRequest.hasMany(Notification, {foreignKey: "non_operational_paid_leave_request_id", as: "non_operational_paid_leave_notifications"});
+Notification.belongsTo(NonOperationalPaidLeaveRequest, { foreignKey: "non_operational_paid_leave_request_id", as: "non_operational_paid_leave_request"});
+
+
+
+StructuralPurchaseRequest.belongsTo(Employee, {foreignKey: 'employee_id', as: 'creator'});
+ProjectPurchaseRequest.belongsTo(Employee, {foreignKey: 'employee_id', as: 'creator'});
+ManagementPurchaseRequest.belongsTo(Employee, {foreignKey: 'employee_id', as: 'creator'});
+OperationalDepartmentPurchaseRequest.belongsTo(Employee, {foreignKey: 'employee_id', as: 'creator'});
+NonOperationalDepartmentPurchaseRequest.belongsTo(Employee, {foreignKey: 'employee_id', as: 'creator'});
+
+StructuralPurchaseRequest.belongsTo(Project, { foreignKey: 'project_id', as: 'project' });
+ProjectPurchaseRequest.belongsTo(Project, { foreignKey: 'project_id', as: 'project' });
+ManagementPurchaseRequest.belongsTo(Project, { foreignKey: 'project_id', as: 'project' });
+OperationalDepartmentPurchaseRequest.belongsTo(Project, { foreignKey: 'project_id', as: 'project' });
+NonOperationalDepartmentPurchaseRequest.belongsTo(Project, { foreignKey: 'project_id', as: 'project' });
+
+StructuralPurchaseRequest.hasMany(StructuralPurchaseRequestAttachment, {foreignKey: 'purchase_request_id',as: 'attachments'});
+StructuralPurchaseRequestAttachment.belongsTo(StructuralPurchaseRequest, {foreignKey: 'purchase_request_id'});
+ProjectPurchaseRequest.hasMany(ProjectPurchaseRequestAttachment, {foreignKey: 'purchase_request_id',as: 'attachments'});
+ProjectPurchaseRequestAttachment.belongsTo(ProjectPurchaseRequest, {foreignKey: 'purchase_request_id'});
+ManagementPurchaseRequest.hasMany(ManagementPurchaseRequestAttachment, {foreignKey: 'purchase_request_id',as: 'attachments'});
+ManagementPurchaseRequestAttachment.belongsTo(ManagementPurchaseRequest, {foreignKey: 'purchase_request_id'});
+OperationalDepartmentPurchaseRequest.hasMany(OperationalDepartmentPurchaseRequestAttachment, {foreignKey: 'purchase_request_id',as: 'attachments'});
+OperationalDepartmentPurchaseRequestAttachment.belongsTo(OperationalDepartmentPurchaseRequest, {foreignKey: 'purchase_request_id'});
+NonOperationalDepartmentPurchaseRequest.hasMany(NonOperationalDepartmentPurchaseRequestAttachment, {foreignKey: 'purchase_request_id',as: 'attachments'});
+NonOperationalDepartmentPurchaseRequestAttachment.belongsTo(NonOperationalDepartmentPurchaseRequest, {foreignKey: 'purchase_request_id'});
+
+StructuralPurchaseRequest.belongsTo(PurchaseType, { foreignKey: 'purchase_id', as: 'structural_purchase' });
+ProjectPurchaseRequest.belongsTo(PurchaseType, { foreignKey: 'purchase_id', as: 'project_purchase' });
+ManagementPurchaseRequest.belongsTo(PurchaseType, { foreignKey: 'purchase_id', as: 'management_purchase' });
+OperationalDepartmentPurchaseRequest.belongsTo(PurchaseType, { foreignKey: 'purchase_id', as: 'operational_department_purchase' });
+NonOperationalDepartmentPurchaseRequest.belongsTo(PurchaseType, { foreignKey: 'purchase_id', as: 'non_operational_department_purchase' });
+
+StructuralPurchaseRequest.hasMany(StructuralPurchaseRequestEmployee, {foreignKey: 'request_id'});
+StructuralPurchaseRequestEmployee.belongsTo(StructuralPurchaseRequest, { foreignKey: 'request_id' });
+StructuralPurchaseRequestEmployee.belongsTo(Employee, { foreignKey: 'employee_id' });
+StructuralPurchaseRequest.hasMany(Notification, {foreignKey: "structural_purchase_request_id", as: "structural_purchase_notifications"});
+Notification.belongsTo(StructuralPurchaseRequest, { foreignKey: "structural_purchase_request_id", as: "structural_purchase_request"});
+
+
+ProjectPurchaseRequest.hasMany(ProjectPurchaseRequestEmployee, {foreignKey: 'request_id'});
+ProjectPurchaseRequestEmployee.belongsTo(ProjectPurchaseRequest, { foreignKey: 'request_id' });
+ProjectPurchaseRequestEmployee.belongsTo(Employee, { foreignKey: 'employee_id' });
+ProjectPurchaseRequest.hasMany(Notification, {foreignKey: "project_purchase_request_id", as: "project_purchase_notifications"});
+Notification.belongsTo(ProjectPurchaseRequest, { foreignKey: "project_purchase_request_id", as: "project_purchase_request"});
+
+ManagementPurchaseRequest.hasMany(ManagementPurchaseRequestEmployee, {foreignKey: 'request_id'});
+ManagementPurchaseRequestEmployee.belongsTo(ManagementPurchaseRequest, { foreignKey: 'request_id' });
+ManagementPurchaseRequestEmployee.belongsTo(Employee, { foreignKey: 'employee_id' });
+ManagementPurchaseRequest.hasMany(Notification, {foreignKey: "management_purchase_request_id", as: "management_purchase_notifications"});
+Notification.belongsTo(ManagementPurchaseRequest, { foreignKey: "management_purchase_request_id", as: "management_purchase_request"});
+
+OperationalDepartmentPurchaseRequest.hasMany(OperationalDepartmentPurchaseRequestEmployee, {foreignKey: 'request_id'});
+OperationalDepartmentPurchaseRequestEmployee.belongsTo(OperationalDepartmentPurchaseRequest, { foreignKey: 'request_id' });
+OperationalDepartmentPurchaseRequestEmployee.belongsTo(Employee, { foreignKey: 'employee_id' });
+OperationalDepartmentPurchaseRequest.hasMany(Notification, {foreignKey: "operational_department_purchase_request_id", as: "operational_department_purchase_notifications"});
+Notification.belongsTo(OperationalDepartmentPurchaseRequest, { foreignKey: "operational_department_purchase_request_id", as: "operational_department_purchase_request"});
+
+NonOperationalDepartmentPurchaseRequest.hasMany(NonOperationalDepartmentPurchaseRequestEmployee, {foreignKey: 'request_id'});
+NonOperationalDepartmentPurchaseRequestEmployee.belongsTo(NonOperationalDepartmentPurchaseRequest, { foreignKey: 'request_id' });
+NonOperationalDepartmentPurchaseRequestEmployee.belongsTo(Employee, { foreignKey: 'employee_id' });
+NonOperationalDepartmentPurchaseRequest.hasMany(Notification, {foreignKey: "non_operational_department_purchase_request_id", as: "non_operational_department_purchase_notifications"});
+Notification.belongsTo(NonOperationalDepartmentPurchaseRequest, { foreignKey: "non_operational_department_purchase_request_id", as: "non_operational_department_purchase_request"});
+
+OperationalSoftwareInstallationRequest.hasMany(OperationalSoftwareInstallationRequestEmployee, {foreignKey: 'request_id'});
+OperationalSoftwareInstallationRequestEmployee.belongsTo(OperationalSoftwareInstallationRequest, { foreignKey: 'request_id' });
+OperationalSoftwareInstallationRequestEmployee.belongsTo(Employee, { foreignKey: 'employee_id' });
+
+OperationalSoftwareInstallationRequest.hasMany(Notification, {foreignKey: "operational_software_installation_request_id", as: "operational_software_installation_notifications"});
+Notification.belongsTo(OperationalSoftwareInstallationRequest, { foreignKey: "operational_software_installation_request_id", as: "operational_software_installation_request"});
+
+
+NonOperationalSoftwareInstallationRequest.hasMany(NonOperationalSoftwareInstallationRequestEmployee, {foreignKey: 'request_id'});
+NonOperationalSoftwareInstallationRequestEmployee.belongsTo(NonOperationalSoftwareInstallationRequest, { foreignKey: 'request_id' });
+NonOperationalSoftwareInstallationRequestEmployee.belongsTo(Employee, { foreignKey: 'employee_id' });
+
+NonOperationalSoftwareInstallationRequest.hasMany(Notification, {foreignKey: "non_operational_software_installation_request_id", as: "non_operational_software_installation_notifications"});
+Notification.belongsTo(NonOperationalSoftwareInstallationRequest, { foreignKey: "non_operational_software_installation_request_id", as: "non_operational_software_installation_request"});
+
+WorkToolRequest.hasMany(WorkToolRequestEmployee, {foreignKey: 'request_id'});
+WorkToolRequestEmployee.belongsTo(WorkToolRequest, { foreignKey: 'request_id' });
+WorkToolRequestEmployee.belongsTo(Employee, { foreignKey: 'employee_id' });
+
+WorkToolRequest.hasMany(Notification, {foreignKey: "work_tool_request_id", as: "work_tool_notifications"});
+Notification.belongsTo(WorkToolRequest, { foreignKey: "work_tool_request_id", as: "work_tool_request"});
+
+WorkToolReturnRequest.hasMany(WorkToolReturnRequestEmployee, {foreignKey: 'request_id'});
+WorkToolReturnRequestEmployee.belongsTo(WorkToolReturnRequest, { foreignKey: 'request_id' });
+WorkToolReturnRequestEmployee.belongsTo(Employee, { foreignKey: 'employee_id' });
+
+
 
 
 module.exports = {
@@ -363,15 +567,52 @@ module.exports = {
     TypeVacation,
     TypePaidLeave,
     SavertecaRequest,
+    SavertecaRequestEmployee,
     PurchaseType,
-    SoftwareInstallationRequest,
+    OperationalSoftwareInstallationRequest,
+    OperationalSoftwareInstallationRequestEmployee,
+    NonOperationalSoftwareInstallationRequest,
+    NonOperationalSoftwareInstallationRequestEmployee,
     WorkToolRequest,
     WorkToolReturnRequest,
     CvRequest,
-    ExpenseNotesRequest,
-    ExpenseNotesRequestAttachment,
-    ExpenseNotesRequestType,
+    ExpenseNotesProjectRequest,
+    ExpenseNotesProjectRequestAttachment,
+    ExpenseNotesProjectRequestEmployee,
+    ExpenseNotesOfferRequest,
+    ExpenseNotesOfferRequestAttachment,
+    ExpenseNotesOfferRequestEmployee,
+    ExpenseNotesProjectRequestType,
+    ExpenseNotesOfferRequestType,
     OfferEmployee,
     Notification,
-    Reminder
+    Reminder,
+    OperationalHolidayRequest,
+    OperationalHolidayRequestEmployee,
+    NonOperationalHolidayRequest,
+    NonOperationalHolidayRequestEmployee,
+    OperationalPaidLeaveRequest,
+    OperationalPaidLeaveRequestAttachment,
+    OperationalPaidLeaveRequestEmployee,
+    NonOperationalPaidLeaveRequest,
+    NonOperationalPaidLeaveRequestAttachment,
+    NonOperationalPaidLeaveRequestEmployee,
+    StructuralPurchaseRequest,
+    StructuralPurchaseRequestAttachment,
+    StructuralPurchaseRequestEmployee,
+    ProjectPurchaseRequest,
+    ProjectPurchaseRequestAttachment,
+    ProjectPurchaseRequestEmployee,
+    ManagementPurchaseRequest,
+    ManagementPurchaseRequestAttachment,
+    ManagementPurchaseRequestEmployee,
+    OperationalDepartmentPurchaseRequest,
+    OperationalDepartmentPurchaseRequestAttachment,
+    OperationalDepartmentPurchaseRequestEmployee,
+    NonOperationalDepartmentPurchaseRequest,
+    NonOperationalDepartmentPurchaseRequestAttachment,
+    NonOperationalDepartmentPurchaseRequestEmployee,
+    WorkToolRequestEmployee,
+    WorkToolReturnRequestEmployee,
+    
 };

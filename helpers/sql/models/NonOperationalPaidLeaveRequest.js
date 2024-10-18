@@ -1,9 +1,9 @@
 const { DataTypes, Model } = require("sequelize");
 
-class SavertecaRequest extends Model {}
+class NonOperationalPaidLeaveRequest extends Model {}
 
 module.exports = (sequelize) => {
-  SavertecaRequest.init(
+    NonOperationalPaidLeaveRequest.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -15,11 +15,14 @@ module.exports = (sequelize) => {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
-      project: {
-        type: DataTypes.TEXT,
+      paid_leave_request_id: {
+        type: DataTypes.INTEGER
       },
-      reason: {
-        type: DataTypes.TEXT,
+      start_date: {
+        type: DataTypes.DATE,
+      },
+      end_date: {
+        type: DataTypes.DATE,
       },
       step_1_accepted: {
         type: DataTypes.BOOLEAN,
@@ -36,7 +39,7 @@ module.exports = (sequelize) => {
         type: DataTypes.DATE,
       },
       step_1_accepted_by: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER
       },
       step_2_accepted: {
         type: DataTypes.BOOLEAN,
@@ -53,7 +56,7 @@ module.exports = (sequelize) => {
         type: DataTypes.DATE,
       },
       step_2_accepted_by: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER
       },
       step_3_accepted: {
         type: DataTypes.BOOLEAN,
@@ -70,10 +73,27 @@ module.exports = (sequelize) => {
         type: DataTypes.DATE,
       },
       step_3_accepted_by: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER
+      },
+      step_4_accepted: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
+      step_4_rejected: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
+      step_4_acceptance_date: {
+        type: DataTypes.DATE,
+      },
+      step_4_rejection_date: {
+        type: DataTypes.DATE,
+      },
+      step_4_accepted_by: {
+        type: DataTypes.INTEGER
       },
       rejected_by: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER
       },
       rejection_reason: {
         type: DataTypes.TEXT,
@@ -91,10 +111,10 @@ module.exports = (sequelize) => {
     },
     {
       sequelize,
-      modelName: "SavertecaRequest",
-      tableName: "saverteca_requests",
+      modelName: "NonOperationalPaidLeaveRequest",
+      tableName: "non_operational_paid_leave_requests",
     }
   );
 
-  return SavertecaRequest;
+  return NonOperationalPaidLeaveRequest;
 };

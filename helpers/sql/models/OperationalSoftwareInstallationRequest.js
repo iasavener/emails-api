@@ -1,9 +1,9 @@
 const { DataTypes, Model } = require("sequelize");
 
-class SavertecaRequest extends Model {}
+class OperationalSoftwareInstallationRequest extends Model {}
 
 module.exports = (sequelize) => {
-  SavertecaRequest.init(
+  OperationalSoftwareInstallationRequest.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -15,7 +15,17 @@ module.exports = (sequelize) => {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
-      project: {
+      department_id: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      software: {
+        type: DataTypes.TEXT,
+      },
+      version: {
+        type: DataTypes.TEXT,
+      },
+      workstation: {
         type: DataTypes.TEXT,
       },
       reason: {
@@ -36,7 +46,7 @@ module.exports = (sequelize) => {
         type: DataTypes.DATE,
       },
       step_1_accepted_by: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER
       },
       step_2_accepted: {
         type: DataTypes.BOOLEAN,
@@ -53,7 +63,7 @@ module.exports = (sequelize) => {
         type: DataTypes.DATE,
       },
       step_2_accepted_by: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER
       },
       step_3_accepted: {
         type: DataTypes.BOOLEAN,
@@ -70,10 +80,10 @@ module.exports = (sequelize) => {
         type: DataTypes.DATE,
       },
       step_3_accepted_by: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER
       },
       rejected_by: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER
       },
       rejection_reason: {
         type: DataTypes.TEXT,
@@ -91,10 +101,10 @@ module.exports = (sequelize) => {
     },
     {
       sequelize,
-      modelName: "SavertecaRequest",
-      tableName: "saverteca_requests",
+      modelName: "OperationalSoftwareInstallationRequest",
+      tableName: "operational_software_installation_requests",
     }
   );
 
-  return SavertecaRequest;
+  return OperationalSoftwareInstallationRequest;
 };

@@ -1,9 +1,9 @@
 const { DataTypes, Model } = require('sequelize');
 
-class ExpenseNotesRequestType extends Model {}
+class ExpenseNotesOfferRequestType extends Model {}
 
 module.exports = (sequelize) => {
-    ExpenseNotesRequestType.init({
+    ExpenseNotesOfferRequestType.init({
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -19,9 +19,9 @@ module.exports = (sequelize) => {
         }
 }, {
     sequelize,
-    modelName: 'ExpenseNotesRequestType',
-    tableName: 'expense_notes_request_types'
+    modelName: 'ExpenseNotesOfferRequestType',
+    tableName: 'expense_notes_offer_request_types'
 });
 
-return ExpenseNotesRequestType;
+return ExpenseNotesOfferRequestType;
 };
