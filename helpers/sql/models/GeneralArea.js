@@ -34,6 +34,10 @@ module.exports = (sequelize) => {
     business_development: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
+    },
+    quinetia: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false
     }
   }, {
     sequelize,
