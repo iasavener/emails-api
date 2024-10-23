@@ -10,7 +10,7 @@ module.exports = (sequelize) => {
       allowNull: false
     },
     platform_permission_id: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false
     },
