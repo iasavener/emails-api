@@ -98,8 +98,7 @@ const OperationalSoftwareInstallationRequestEmployee = require('./models/Operati
 const NonOperationalSoftwareInstallationRequestEmployee = require('./models/NonOperationalSoftwareInstallationRequestEmployee')(sequelize);
 const WorkToolRequestEmployee = require('./models/WorkToolRequestEmployee')(sequelize);
 const WorkToolReturnRequestEmployee = require('./models/WorkToolReturnRequestEmployee')(sequelize);
-
-
+const EducationPill = require('./models/EducationPill')(sequelize);
 
 Employee.hasMany(Project, { foreignKey: 'project_manager_id', as: 'managed_projects' });
 Project.belongsTo(Employee, { foreignKey: 'project_manager_id', as: 'project_manager' });
@@ -508,7 +507,8 @@ WorkToolReturnRequest.hasMany(WorkToolReturnRequestEmployee, {foreignKey: 'reque
 WorkToolReturnRequestEmployee.belongsTo(WorkToolReturnRequest, { foreignKey: 'request_id' });
 WorkToolReturnRequestEmployee.belongsTo(Employee, { foreignKey: 'employee_id' });
 
-
+EducationPill.belongsTo(Employee, { foreignKey: 'created_by', as: 'creator' });
+EducationPill.belongsTo(Employee, { foreignKey: 'updated_by', as: 'editor' });
 
 
 module.exports = {
@@ -614,5 +614,6 @@ module.exports = {
     NonOperationalDepartmentPurchaseRequestEmployee,
     WorkToolRequestEmployee,
     WorkToolReturnRequestEmployee,
+    EducationPill
     
 };
