@@ -114,6 +114,9 @@ module.exports = (sequelize) => {
     },
     purchase_limit: {
       type: DataTypes.INTEGER
+    },
+    category: {
+      type: DataTypes.INTEGER
     }
   }, {
     sequelize,
