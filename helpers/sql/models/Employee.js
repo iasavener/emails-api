@@ -117,6 +117,12 @@ module.exports = (sequelize) => {
     },
     category: {
       type: DataTypes.INTEGER
+    },
+    current_holidays_days_available: {
+      type: DataTypes.INTEGER
+    },
+    remaining_holidays_days_available: {
+      type: DataTypes.INTEGER
     }
   }, {
     sequelize,

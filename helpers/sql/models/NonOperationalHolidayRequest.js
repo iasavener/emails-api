@@ -115,7 +115,7 @@ module.exports = (sequelize) => {
     {
       sequelize,
       modelName: "NonOperationalHolidayRequest",
-      tableName: "non_operatioanl_holiday_requests",
+      tableName: "non_operational_holiday_requests",
     }
   );
 
